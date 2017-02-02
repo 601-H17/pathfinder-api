@@ -13,5 +13,14 @@
     "express": "^4.14.1",
     "geojson-path-finder": "^1.4.1",
     "mongoose": "^4.8.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/601-H17/pathfinder-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/601-H17/pathfinder-api/issues"
+  },
+  "homepage": "https://github.com/601-H17/pathfinder-api#readme"
 }
