@@ -7,15 +7,14 @@ let should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('/GET pathfinder', () => {
-    it('it should find the path', (done) => {
+describe('/GET /api/pathfinder', () => {
+    it('it should return an error when no params is given', (done) => {
         chai.request(server.app)
-            .get('/api/pathfinder');
-        // .end((err, res) => {
-        //     res.should.have.status(200);
-        //     res.body.should.be.a('array');
-        //     res.body.length.should.be.eql(0);
-        done();
-        // });
+            .get('/api/pathfinder')
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.have.property('error');
+                done();
+            });
     });
 });

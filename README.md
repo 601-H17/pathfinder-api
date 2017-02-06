@@ -12,9 +12,14 @@ $ cd the_project/
 $ npm install
 ```
 
-3. Start the server:
+3. Start the server: 
 ```bash
-$ node index.js
+$ npm start
+```
+
+4. Run integration tests:
+```bash
+$ npm test
 ```
 
 #### You can use [Postman](https://www.getpostman.com) too to call the API.
