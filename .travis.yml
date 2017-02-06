@@ -1,5 +1,8 @@
 language: node_js
 install:
-    - npm install
+- npm install
 script:
-    - npm test
+- npm test
+deploy:
+  api_key:
+    secure: QmBxHk5rxPPUEmdzmqk4mZkKP5hRqR5LeAsf/GH8P/zXtJnSy79Zq8Vzn5QN6wfppqT876K3FTT7GunFnhwFxGhD4t6KmfS8rAqJtTTrU5ppNxvFdVcTbmMjXqryYE/Lh07nSeNuSsBvqbhrQQ0phXRhcBXBh9tqIvfPzRS0kae92jtUlTqxj0FQXuyVamp0WO1f4DkfXoElDdflm2PxUHmUH72fmg2fWly1V6XaXoAFQkO0hqbbG9aR0Sd7G+bdjgF+psPmxV4PMkjqKYzlHvXFd3gjcRKYO1TPtrK2RQkRYucorVtrBF75dYRAapWtgJzr2KqaZ/j9+8irB8hkWmE2NEC+6+DMRFOhdh0zhWfn2tuQKbiO0W18JW1qp4quoXVP+HiicEROsqugeopObgiiX+f6SpZZUt6kz2/SSJ6mRuYXizhizwySNkA1GIOXrCfI9KrAKfYkZDoc956b+JSZJ5Jd+LjyXlW4mBhVUkCMSDzOMA/hk8OOjNpslhYny46PHFvNlz32YUF/QMRgUbDtc7h2of3VlF9f9ziToc6CBrGlnqr3wdL6tBvd6EWao/WBHZtAjECxnfSnhiYlGIpF2eWhFIerbNtVUQZ4Y6OjdgYZAVso666KjwlCO2VV6UiBYCfpNkQKPX72VFtqpgwKUGA0dcsXw/sJTE5iheo=
