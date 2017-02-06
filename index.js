@@ -23,8 +23,8 @@ router.get('/', function(req, res) {
     var path;
     var status;
     var error = undefined;
-    console.log(localA);
-    console.log(localB);
+    // console.log(localA);
+    // console.log(localB);
 
     var fs = require('fs');
     try {
