@@ -4,19 +4,21 @@
   "description": "Path finder for Geo API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.16.0",
-    "chai": "^3.5.0",
     "express": "^4.14.1",
     "geojson-path-finder": "^1.4.1",
     "mongoose": "^4.8.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/601-H17/pathfinder-api.git"
