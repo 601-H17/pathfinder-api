@@ -3,7 +3,7 @@ var app = express();
 exports.app = app;
 var bodyParser = require('body-parser');
 var PathFinder = require('geojson-path-finder');
-//var algoTools = require('./pathfinderAlgorithm');
+var algoTools = require('./pathfinderAlgorithm');
 
 var geojson = require('./corridors.json');
 
@@ -29,7 +29,7 @@ router.get('/', function(req, res) {
 
     var fs = require('fs');
     try {
-        var start = findLocal(localA);
+        /*var start = findLocal(localA);
         var finish = findLocal(localB);
 
         function findLocal(toFind) {
@@ -43,8 +43,8 @@ router.get('/', function(req, res) {
         }
 
         var pathFinder = new PathFinder(geojson);
-        path = pathFinder.findPath(start, finish);
-        //algoTools.pathfind();
+        path = pathFinder.findPath(start, finish);*/
+        algoTools.pathfind();
     } catch (e) {
         error = { message: "Can't find path with those locals" };
     }
