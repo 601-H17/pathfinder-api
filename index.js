@@ -27,7 +27,7 @@ router.get('/', function(req, res) {
     // console.log(localA);
     // console.log(localB);
 
-    var fs = require('fs');
+    //var fs = require('fs');
     try {
         /*var start = findLocal(localA);
         var finish = findLocal(localB);
@@ -44,7 +44,7 @@ router.get('/', function(req, res) {
 
         var pathFinder = new PathFinder(geojson);
         path = pathFinder.findPath(start, finish);*/
-        algoTools.pathfind("G-160", "G-164");
+        path = algoTools.pathfind("G-160", "G-164");
     } catch (e) {
         error = { message: "Can't find path with those locals" };
     }

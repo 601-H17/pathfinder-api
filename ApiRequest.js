@@ -18,6 +18,7 @@ module.exports = {
 
         getApiCall(options, function(statusCode, result){
             console.log(statusCode);
+            console.log("classroom " + result.name);
             classroom = result;
         });
         
@@ -38,7 +39,7 @@ module.exports = {
 
         return classrooms = getApiCall(options, function(statusCode, result){
                             console.log(statusCode);
-                            console.log(result);
+                            console.log("classrooms "+result);
                             return result;
                         });
     },
