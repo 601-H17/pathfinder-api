@@ -5,10 +5,10 @@ module.exports = {
     pathfind: function (startingLocal, destinationLocal) {
         try{
             var classrooms = ApiCallTools.getAllClassrooms();
-            var classroom = ApiCallTools.getClassroom("G-165");
+            //var classroom = ApiCallTools.getClassroom("G-165");
             //var staircases = ApiCallTools.getAllStairs();
             console.log(classrooms);
-            console.log(classroom);
+            //console.log(classroom);
             
             //var startingFloor = ApiCallTools.getClassroom(startingLocal).floor;
             //var endingFloor = ApiCallTools.getClassroom(destinationLocal).floor;

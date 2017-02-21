@@ -48,12 +48,12 @@ router.get('/', function(req, res) {
     } catch (e) {
         error = { message: "Can't find path with those locals" };
     }
-
+/*
     if (error == undefined) {
         res.status(200).json(path);
     } else {
         res.status(404).json({ error });
-    }
+    }*/
 });
 
 router.post('/corridors', function(req, res) {
