@@ -8,7 +8,6 @@ module.exports = {
         return getApiResponse(allClassroomsPath);
     },
 
-    getAllClassrooms: function(){
         var jsonResponse;
         fetch('https://csf-geo-app.herokuapp.com/api/classrooms', { headers: {'Authorization': 'Token token='+authToken }})
         .then(function(response) { return response.json(); })

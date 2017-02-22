@@ -2,9 +2,7 @@ var ApiCallTools = require('./ApiRequest');
 var Pathfinder = require('geojson-path-finder');
 
 module.exports = {
-    pathfind: function (startingLocal, destinationLocal) {
         try{
-            var classrooms = ApiCallTools.getAllClassrooms();
             //var classroom = ApiCallTools.getClassroom("G-165");
             //var staircases = ApiCallTools.getAllStairs();
             console.log(classrooms);

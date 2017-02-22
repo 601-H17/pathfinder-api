@@ -5,7 +5,6 @@ var bodyParser = require('body-parser');
 var PathFinder = require('geojson-path-finder');
 var algoTools = require('./pathfinderAlgorithm');
 
-var geojson = require('./corridors.json');
 
 // Configure body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
