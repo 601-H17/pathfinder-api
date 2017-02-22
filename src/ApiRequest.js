@@ -4,7 +4,7 @@ var fetch = require('node-fetch');
 
 module.exports = {
     getClassroom: async function(localName){
-        var classroomPath = '/api/classroom/'+localName;
+        let classroomPath = '/api/classroom/'+localName;
         let classroom = await getApiResponse(classroomPath);
         return classroom;
     },
@@ -16,7 +16,7 @@ module.exports = {
     },
 
     getAllStairs: async function(){
-        var allStairsPath = '/api/staircases';
+        let allStairsPath = '/api/staircases';
         let staircases = await getApiResponse(allStairsPath);
         return staircases;
     }
@@ -24,8 +24,9 @@ module.exports = {
 }
 
 async function getApiResponse(apiPath){
-    let response = await fetch('https://csf-geo-app.herokuapp.com'+apiPath, { headers: {'Authorization': 'Token token='+authToken }})
+    let response = await fetch(csfUrl+apiPath, { headers: {'Authorization': 'Token token='+authToken }})
     return await response.json();
 }
 
-var authToken = 'bfc6b6a7a48eb2841ff1090a53e22bed';
+let authToken = 'bfc6b6a7a48eb2841ff1090a53e22bed';
+let csfUrl = 'https://csf-geo-app.herokuapp.com';

@@ -2,8 +2,6 @@
 
 var ApiCallTools = require('./ApiRequest');
 var Pathfinder = require('geojson-path-finder');
-var https = require("https");
-var fetch = require('node-fetch');
 module.exports = {
     pathfind: function pathfind(startingLocal, destinationLocal) {
         var classrooms, error;
@@ -11,46 +9,52 @@ module.exports = {
             while (1) {
                 switch (_context.prev = _context.next) {
                     case 0:
-                        _context.next = 2;
+                        _context.prev = 0;
+                        _context.next = 3;
                         return regeneratorRuntime.awrap(ApiCallTools.getAllClassrooms());
 
-                    case 2:
+                    case 3:
                         classrooms = _context.sent;
 
                         console.log(classrooms);
-                        try {
 
-                            //var classroom = ApiCallTools.getClassroom("G-165");
-                            //var staircases = ApiCallTools.getAllStairs();
+                        /*var classroom = await ApiCallTools.getClassroom("G-165");
+                        console.log(classroom);*/
 
-                            //console.log(classroom);
+                        /*var staircases = await ApiCallTools.getAllStairs();
+                        console.log(staircases);*/
 
-                            //var startingFloor = ApiCallTools.getClassroom(startingLocal).floor;
-                            //var endingFloor = ApiCallTools.getClassroom(destinationLocal).floor;
+                        //var startingFloor = ApiCallTools.getClassroom(startingLocal).floor;
+                        //var endingFloor = ApiCallTools.getClassroom(destinationLocal).floor;
 
-                            /*
-                            if(startingFloor.equals(endingFloor)){
-                                var finish = findLocal(destinationLocal);
-                                var pathFinder = new PathFinder(geojson);
-                                path = pathFinder.findPath(startingLocal, finish);
-                            }
-                            else {
-                                findingSameFloorStaircases(currentFloor);
-                            } */
-
-                        } catch (e) {
-                            error = 'ERREUR !?!?!?!?!? :( ';
+                        /*
+                        if(startingFloor.equals(endingFloor)){
+                            var finish = findLocal(destinationLocal);
+                            var pathFinder = new PathFinder(geojson);
+                            path = pathFinder.findPath(startingLocal, finish);
                         }
+                        else {
+                            findingSameFloorStaircases(currentFloor);
+                        } */
+                        _context.next = 10;
+                        break;
+
+                    case 7:
+                        _context.prev = 7;
+                        _context.t0 = _context['catch'](0);
+                        error = 'ERREUR !?!?!?!?!? :( ';
+
+                    case 10:
                         if (error != undefined) {
                             console.log("Yo y'a une erreur");
                         }
 
-                    case 6:
+                    case 11:
                     case 'end':
                         return _context.stop();
                 }
             }
-        }, null, this);
+        }, null, this, [[0, 7]]);
     }
 };
 
@@ -63,6 +67,10 @@ function findLocalGeo(localToFind) {
         }
     }
 }
+/*
+    var pathFinder = new PathFinder(geojson);
+    path = findPath(start, finish);
+*/
 
 function findingSameFloorStaircases(currentFloor) {
     var staircasesOnSameFloor;

@@ -3,11 +3,14 @@ var Pathfinder = require('geojson-path-finder');
 module.exports = {
     pathfind: async function (startingLocal, destinationLocal) {
         try{
-            
-            //var classroom = ApiCallTools.getClassroom("G-165");
-            //var staircases = ApiCallTools.getAllStairs();
-            
-            //console.log(classroom);
+            var classrooms = await ApiCallTools.getAllClassrooms();
+            console.log(classrooms);
+
+            /*var classroom = await ApiCallTools.getClassroom("G-165");
+            console.log(classroom);*/
+
+            /*var staircases = await ApiCallTools.getAllStairs();
+            console.log(staircases);*/
            
             //var startingFloor = ApiCallTools.getClassroom(startingLocal).floor;
             //var endingFloor = ApiCallTools.getClassroom(destinationLocal).floor;
@@ -21,8 +24,6 @@ module.exports = {
             else {
                 findingSameFloorStaircases(currentFloor);
             } */
-            var classrooms = await ApiCallTools.getAllClassrooms();
-            console.log(classrooms);
         }
         catch(e){
             var error = 'ERREUR !?!?!?!?!? :( ';
@@ -42,6 +43,10 @@ function findLocalGeo(localToFind) {
         }
     }
 }
+/*
+    var pathFinder = new PathFinder(geojson);
+    path = findPath(start, finish);
+*/
 
 function findingSameFloorStaircases(currentFloor){
     var staircasesOnSameFloor;

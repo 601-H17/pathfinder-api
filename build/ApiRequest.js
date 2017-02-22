@@ -79,7 +79,7 @@ function getApiResponse(apiPath) {
             switch (_context4.prev = _context4.next) {
                 case 0:
                     _context4.next = 2;
-                    return regeneratorRuntime.awrap(fetch('https://csf-geo-app.herokuapp.com' + apiPath, { headers: { 'Authorization': 'Token token=' + authToken } }));
+                    return regeneratorRuntime.awrap(fetch(csfUrl + apiPath, { headers: { 'Authorization': 'Token token=' + authToken } }));
 
                 case 2:
                     response = _context4.sent;
@@ -98,3 +98,4 @@ function getApiResponse(apiPath) {
 }
 
 var authToken = 'bfc6b6a7a48eb2841ff1090a53e22bed';
+var csfUrl = 'https://csf-geo-app.herokuapp.com';

@@ -27,25 +27,8 @@ router.get('/', function (req, res) {
     var path;
     var status;
     var error = undefined;
-    // console.log(localA);
-    // console.log(localB);
 
-    //var fs = require('fs');
     try {
-        /*var start = findLocal(localA);
-        var finish = findLocal(localB);
-          function findLocal(toFind) {
-            var file = fs.readFileSync('./corridors.json');
-            var obj = JSON.parse(file);
-            for (var i = 0; i < obj.features.length; i++) {
-                if (obj.features[i].geometry.type == "Point" && obj.features[i].properties.ref != null && obj.features[i].properties.ref == toFind) {
-                    return obj.features[i];
-                }
-            }
-        }
-          var pathFinder = new PathFinder(geojson);
-        path = pathFinder.findPath(start, finish);*/
-
         algoTools.pathfind("G-160", "G-164");
     } catch (e) {
         error = { message: "Can't find path with those locals" };
@@ -55,7 +38,8 @@ router.get('/', function (req, res) {
             res.status(200).json(path);
         } else {
             res.status(404).json({ error });
-        }*/
+        }
+    */
 });
 
 router.post('/corridors', function (req, res) {
