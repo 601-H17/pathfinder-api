@@ -1,36 +1,42 @@
 var ApiCallTools = require('./ApiRequest');
 var Pathfinder = require('geojson-path-finder');
+var fs = require('fs');
+var geojson = require('../corridors.json');
+
+var pathFinder = new PathFinder(geojson);
+var staircases;
+var classrooms;
 module.exports = {
     pathfind: async function (startingLocal, destinationLocal) {
-        try{
-            var classrooms = await ApiCallTools.getAllClassrooms();
-            console.log(classrooms);
+       // try{
+           /* classrooms = await ApiCallTools.getAllClassrooms();
+            console.log(classrooms);*/
 
-            /*var classroom = await ApiCallTools.getClassroom("G-165");
+           /* var destinationLocal = await ApiCallTools.getClassroom(destinationLocal);
             console.log(classroom);*/
 
-            /*var staircases = await ApiCallTools.getAllStairs();
+           /* staircases = await ApiCallTools.getAllStairs();
             console.log(staircases);*/
            
-            //var startingFloor = ApiCallTools.getClassroom(startingLocal).floor;
-            //var endingFloor = ApiCallTools.getClassroom(destinationLocal).floor;
-
-            /*
-            if(startingFloor.equals(endingFloor)){
-                var finish = findLocal(destinationLocal);
-                var pathFinder = new PathFinder(geojson);
-                path = pathFinder.findPath(startingLocal, finish);
+            var startingFloor = ApiCallTools.getClassroom(startingLocal).floor;
+            var endingFloor = ApiCallTools.getClassroom(destinationLocal).floor;
+            
+            if(startingFloor == endingFloor){
+                var start = findLocalGeo(startingFloor);
+                var finish = findLocalGeo(destinationLocal);
+                path = pathFinder.findPath(start, finish);
+                console.log(path);
             }
             else {
-                findingSameFloorStaircases(currentFloor);
-            } */
-        }
-        catch(e){
+                //findingSameFloorStaircases(currentFloor);
+            } 
+        //}
+       /* catch(e){
             var error = 'ERREUR !?!?!?!?!? :( ';
         }
         if (error != undefined){
             console.log("Yo y'a une erreur");
-        }
+        }*/
     }
 }
 
@@ -38,15 +44,11 @@ function findLocalGeo(localToFind) {
     var file = fs.readFileSync('./corridors.json');
     var obj = JSON.parse(file);
     for (var i = 0; i < obj.features.length; i++) {
-        if (obj.features[i].geometry.type == "Point" && obj.features[i].properties.ref != null && obj.features[i].properties.ref == toFind) {
+        if (obj.features[i].geometry.type == "Point" && obj.features[i].properties.ref != null && obj.features[i].properties.ref == localToFind) {
             return obj.features[i];
         }
     }
 }
-/*
-    var pathFinder = new PathFinder(geojson);
-    path = findPath(start, finish);
-*/
 
 function findingSameFloorStaircases(currentFloor){
     var staircasesOnSameFloor;

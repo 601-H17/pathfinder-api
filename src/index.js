@@ -3,7 +3,6 @@ require("babel-polyfill");
 var app = express();
 exports.app = app;
 var bodyParser = require('body-parser');
-var PathFinder = require('geojson-path-finder');
 var algoTools = require('./pathfinderAlgorithm');
 
 var geojson = require('../corridors.json');
