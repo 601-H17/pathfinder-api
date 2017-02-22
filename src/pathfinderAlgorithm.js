@@ -1,15 +1,14 @@
 var ApiCallTools = require('./ApiRequest');
 var Pathfinder = require('geojson-path-finder');
-
 module.exports = {
     pathfind: async function (startingLocal, destinationLocal) {
         try{
-            var classrooms = await ApiCallTools.getAllClassrooms();
+            
             //var classroom = ApiCallTools.getClassroom("G-165");
             //var staircases = ApiCallTools.getAllStairs();
-            console.log(classrooms);
-            //console.log(classroom);
             
+            //console.log(classroom);
+           
             //var startingFloor = ApiCallTools.getClassroom(startingLocal).floor;
             //var endingFloor = ApiCallTools.getClassroom(destinationLocal).floor;
 
@@ -22,7 +21,8 @@ module.exports = {
             else {
                 findingSameFloorStaircases(currentFloor);
             } */
-
+            var classrooms = await ApiCallTools.getAllClassrooms();
+            console.log(classrooms);
         }
         catch(e){
             var error = 'ERREUR !?!?!?!?!? :( ';
@@ -52,7 +52,3 @@ function findingSameFloorStaircases(currentFloor){
     }
     return staircaseOnSameFloor;
 }
-
-
-
-

@@ -1,6 +1,7 @@
 'use strict';
 
 var express = require('express');
+require("babel-polyfill");
 var app = express();
 exports.app = app;
 var bodyParser = require('body-parser');
@@ -44,7 +45,8 @@ router.get('/', function (req, res) {
         }
           var pathFinder = new PathFinder(geojson);
         path = pathFinder.findPath(start, finish);*/
-        path = algoTools.pathfind("G-160", "G-164");
+
+        algoTools.pathfind("G-160", "G-164");
     } catch (e) {
         error = { message: "Can't find path with those locals" };
     }
