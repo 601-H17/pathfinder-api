@@ -2,22 +2,27 @@
 
 To install NodeJS, follow this [guide](https://nodejs.org/en)
 
-1. In a terminal, you need to go in the project directory:
+### 1. In a terminal, you need to go in the project directory:
 ```bash
 $ cd the_project/
 ```
 
-2. When you're in, restore all the dependencies:
+### 2. When you're in, restore all the dependencies:
 ```bash
 $ npm install
 ```
+### 3. Build the project:
+```bash
+$ npm run build
+```
+*Note: You have to build everytime the project is updated.*
 
-3. Start the server: 
+### 4. Start the server: 
 ```bash
 $ npm start
 ```
 
-4. Run integration tests:
+### 5. Run integration tests:
 ```bash
 $ npm test
 ```
