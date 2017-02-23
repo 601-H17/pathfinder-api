@@ -10,27 +10,27 @@ var staircases;
 var classrooms;
 module.exports = {
     pathfind: function pathfind(startingLocal, destinationLocal) {
-        var startingFloor, endingFloor, start, finish, path;
+        var startObj, destObj, startingFloor, destinationFloor, start, finish, path;
         return regeneratorRuntime.async(function pathfind$(_context) {
             while (1) {
                 switch (_context.prev = _context.next) {
                     case 0:
-                        // try{
-                        /* classrooms = await ApiCallTools.getAllClassrooms();
-                         console.log(classrooms);*/
+                        _context.next = 2;
+                        return regeneratorRuntime.awrap(ApiCallTools.getClassroom(startingLocal));
 
-                        /* var destinationLocal = await ApiCallTools.getClassroom(destinationLocal);
-                         console.log(classroom);*/
+                    case 2:
+                        startObj = _context.sent;
+                        _context.next = 5;
+                        return regeneratorRuntime.awrap(ApiCallTools.getClassroom(destinationLocal));
 
-                        /* staircases = await ApiCallTools.getAllStairs();
-                         console.log(staircases);*/
+                    case 5:
+                        destObj = _context.sent;
+                        startingFloor = startObj.floor;
+                        destinationFloor = destObj.floor;
 
-                        startingFloor = ApiCallTools.getClassroom(startingLocal).floor;
-                        endingFloor = ApiCallTools.getClassroom(destinationLocal).floor;
 
-
-                        if (startingFloor == endingFloor) {
-                            start = findLocalGeo(startingFloor);
+                        if (startingFloor == destinationFloor) {
+                            start = findLocalGeo(startingLocal);
                             finish = findLocalGeo(destinationLocal);
                             path = pathFinder.findPath(start, finish);
 
@@ -46,7 +46,7 @@ module.exports = {
                              console.log("Yo y'a une erreur");
                          }*/
 
-                    case 3:
+                    case 9:
                     case 'end':
                         return _context.stop();
                 }

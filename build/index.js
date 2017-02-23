@@ -28,7 +28,7 @@ router.get('/', function (req, res) {
     var error = undefined;
 
     try {
-        algoTools.pathfind("G-160", "G-164");
+        algoTools.pathfind("G-165", "G-164");
     } catch (e) {
         error = { message: "Can't find path with those locals" };
     }

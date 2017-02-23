@@ -12,24 +12,27 @@ module.exports = {
            /* classrooms = await ApiCallTools.getAllClassrooms();
             console.log(classrooms);*/
 
-           /* var destinationLocal = await ApiCallTools.getClassroom(destinationLocal);
+            /*var classroom = await ApiCallTools.getClassroom(destinationLocal);
             console.log(classroom);*/
 
            /* staircases = await ApiCallTools.getAllStairs();
             console.log(staircases);*/
            
-            var startingFloor = ApiCallTools.getClassroom(startingLocal).floor;
-            var endingFloor = ApiCallTools.getClassroom(destinationLocal).floor;
+            var startObj = await ApiCallTools.getClassroom(startingLocal);
+            var destObj = await ApiCallTools.getClassroom(destinationLocal);
+
+            var startingFloor = startObj.floor;
+            var destinationFloor = destObj.floor;
             
-            if(startingFloor == endingFloor){
-                var start = findLocalGeo(startingFloor);
+            if(startingFloor == destinationFloor){
+                var start = findLocalGeo(startingLocal);
                 var finish = findLocalGeo(destinationLocal);
                 var path = pathFinder.findPath(start, finish);
                 console.log(path);
             }
             else {
                 //findingSameFloorStaircases(currentFloor);
-            } 
+            }
         //}
        /* catch(e){
             var error = 'ERREUR !?!?!?!?!? :( ';
