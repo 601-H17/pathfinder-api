@@ -1,7 +1,7 @@
 'use strict';
 
 var ApiCallTools = require('./ApiRequest');
-var Pathfinder = require('geojson-path-finder');
+var PathFinder = require('geojson-path-finder');
 var fs = require('fs');
 var geojson = require('../corridors.json');
 
@@ -10,7 +10,7 @@ var staircases;
 var classrooms;
 module.exports = {
     pathfind: function pathfind(startingLocal, destinationLocal) {
-        var startingFloor, endingFloor, start, finish;
+        var startingFloor, endingFloor, start, finish, path;
         return regeneratorRuntime.async(function pathfind$(_context) {
             while (1) {
                 switch (_context.prev = _context.next) {
@@ -32,8 +32,8 @@ module.exports = {
                         if (startingFloor == endingFloor) {
                             start = findLocalGeo(startingFloor);
                             finish = findLocalGeo(destinationLocal);
-
                             path = pathFinder.findPath(start, finish);
+
                             console.log(path);
                         } else {}
                         //findingSameFloorStaircases(currentFloor);

@@ -1,5 +1,5 @@
 var ApiCallTools = require('./ApiRequest');
-var Pathfinder = require('geojson-path-finder');
+var PathFinder = require('geojson-path-finder');
 var fs = require('fs');
 var geojson = require('../corridors.json');
 
@@ -24,7 +24,7 @@ module.exports = {
             if(startingFloor == endingFloor){
                 var start = findLocalGeo(startingFloor);
                 var finish = findLocalGeo(destinationLocal);
-                path = pathFinder.findPath(start, finish);
+                var path = pathFinder.findPath(start, finish);
                 console.log(path);
             }
             else {
