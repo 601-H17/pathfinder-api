@@ -20,27 +20,27 @@ module.exports = {
             originalEnd = ApiCallTools.getClassroom(destinationPoint);
             var path = findAndPathfind(startingPoint, destinationPoint);
             return path;
-            //return pathfindRec(startingPoint, destinationPoint, []);
+            //return pathfindRecursive(startingPoint, destinationPoint, []);
             
             
             /*else {
                 staircases = findingSameFloorStaircases(currentFloor);
                 for(var i = 0; i < staircases.length; i++){
                     var staircase = staircases[i];
-                    currentPath.push(findAndPathfind(startingPoint, staircase.name));
-                    //TODO: Faire attention: si le local n'est pas accessible -> dropper le currentPath et passer au prochain
-                    currentPath.push(findAndPathfind(staircase.name, destinationPoint));
+                    fullPath.push(findAndPathfind(startingPoint, staircase.name));
+                    //TODO: Faire attention: si le local n'est pas accessible -> dropper le fullPath et passer au prochain
+                    fullPath.push(findAndPathfind(staircase.name, destinationPoint));
 
                     
                     var totalWeight;
-                    for(var a = 0; a < currentPath.length; a++){
-                        totalWeight += currentPath[i].weight;
+                    for(var a = 0; a < fullPath.length; a++){
+                        totalWeight += fullPath[i].weight;
                     }
-                    currentPath.push(totalWeight);
+                    fullPath.push(totalWeight);
                     if(totalWeight < shortestPath.weight){
-                        shortestPath = currentPath;
+                        shortestPath = fullPath;
                     }
-                    currentPath = [];
+                    fullPath = [];
                 }
             }*/
         }
@@ -53,30 +53,61 @@ module.exports = {
     }
 }
 
-async function pathfindRec(startingPoint, endingPoint, currentPath){
+async function pathfindRecursive(startingPoint, endingPoint, fullPath){
 
-    var startingFloor = await getClassFloor(startingPoint);
-    var destinationFloor = await getClassFloor(endingPoint);
+    var startingFloor = await getLocalFloor(startingPoint);
+    var endingFloor = await getLocalFloor(endingPoint);
 
-    if(startingFloor == destinationFloor){
-        /*try{
-            var path = findAndPathfind(startingPoint, endingPoint);
-            currentPath.push(path);
+    var startingWing = await getLocalWing(startingPoint);
+    var endingWing = await getLocalWing(endingPoint);
+
+    if(startingFloor == endingFloor && startingWing == endingWing){
+        try{
+            fullPath.push(findAndPathfind(startingPoint, endingPoint));
+            return fullPath;
         }
         catch(e){
-
-        }*/
-        var path = findAndPathfind(startingPoint, endingPoint);
-        return path;
+            console.log('How is this even real?');
+        }
     }
-    else{
+    else if (startingWing == endingWing) {
         staircases = findingSameFloorStaircases(startingFloor);
             for(var i = 0; i < staircases.length; i++){
-                if(destinationFloor <= staircases[i].floor_max){
-                    currentPath.push(findAndPathfind(startingPoint, staircases[i]));
-
+                if(startingFloor < endingFloor && endingFloor <= staircases[i].floor_max){
+                    try{
+                        fullPath.push(findAndPathfind(startingPoint, staircases[i]));
+                        return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
+                    } catch(e){ continue; }
+                }
+                else if(startingFloor > endingFloor && endingFloor >= staircases[i].floor_min){
+                    try{
+                        fullPath.push(findAndPathfind(startingPoint, staircases[i]));
+                        return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
+                    } catch(e){ continue; }
+                }
+                else if(startingFloor < endingFloor && endingFloor >= staircases[i].floor_max){
+                    try{
+                        fullPath.push(findAndPathfind(startingPoint, staircases[i]));
+                        return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
+                    } catch(e){ continue; }
+                }
+               
+                else if (startingFloor > endingFloor && endingFloor <= staircases^[i].floor_min){
+                    try{
+                        fullPath.push(findAndPathfind(startingPoint, staircases[i]));
+                        return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
+                    } catch(e){ continue; }
                 }
             }
+    }
+    else if(startingFloor == endingFloor){
+        try{
+            fullPath.push(findAndPathfind(startingPoint, endingPoint));
+            return fullPath;
+        }
+        catch(e){
+            
+        }
     }
 }
 
@@ -107,7 +138,7 @@ function findAndPathfind(start, destination){
      return pathFinder.findPath(start, finish);
 }
 
-async function getClassFloor(localName){
+async function getLocalFloor(localName){
     var localObj = await ApiCallTools.getClassroom(localName);
     return destObj.floor;
 }
