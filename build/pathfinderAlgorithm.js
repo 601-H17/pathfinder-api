@@ -16,7 +16,7 @@ var classrooms;
 var shortestPath;
 module.exports = {
     pathfind: function pathfind(startingPoint, destinationPoint) {
-        var error;
+        var path, error;
         return regeneratorRuntime.async(function pathfind$(_context) {
             while (1) {
                 switch (_context.prev = _context.next) {
@@ -26,25 +26,25 @@ module.exports = {
 
                         originalStart = ApiCallTools.getClassroom(startingPoint);
                         originalEnd = ApiCallTools.getClassroom(destinationPoint);
+                        path = findAndPathfind(startingPoint, destinationPoint);
+                        return _context.abrupt('return', path);
 
-                        return _context.abrupt('return', pathfindRec(startingPoint, destinationPoint, []));
-
-                    case 6:
-                        _context.prev = 6;
+                    case 7:
+                        _context.prev = 7;
                         _context.t0 = _context['catch'](0);
                         error = _context.t0;
 
-                    case 9:
+                    case 10:
                         if (error != undefined) {
                             console.log(error);
                         }
 
-                    case 10:
+                    case 11:
                     case 'end':
                         return _context.stop();
                 }
             }
-        }, null, this, [[0, 6]]);
+        }, null, this, [[0, 7]]);
     }
 };
 
@@ -65,23 +65,29 @@ function pathfindRec(startingPoint, endingPoint, currentPath) {
                 case 5:
                     destinationFloor = _context2.sent;
 
+                    if (!(startingFloor == destinationFloor)) {
+                        _context2.next = 11;
+                        break;
+                    }
 
-                    if (startingFloor == destinationFloor) {
-                        try {
-                            path = findAndPathfind(startingPoint, endingPoint);
+                    /*try{
+                        var path = findAndPathfind(startingPoint, endingPoint);
+                        currentPath.push(path);
+                    }
+                    catch(e){
+                      }*/
+                    path = findAndPathfind(startingPoint, endingPoint);
+                    return _context2.abrupt('return', path);
 
-                            currentPath.push(path);
-                        } catch (e) {}
-                    } else {
-                        staircases = findingSameFloorStaircases(startingFloor);
-                        for (i = 0; i < staircases.length; i++) {
-                            if (destinationFloor <= staircases[i].floor_max) {
-                                currentPath.push(findAndPathfind(startingPoint, staircases[i]));
-                            }
+                case 11:
+                    staircases = findingSameFloorStaircases(startingFloor);
+                    for (i = 0; i < staircases.length; i++) {
+                        if (destinationFloor <= staircases[i].floor_max) {
+                            currentPath.push(findAndPathfind(startingPoint, staircases[i]));
                         }
                     }
 
-                case 7:
+                case 13:
                 case 'end':
                     return _context2.stop();
             }

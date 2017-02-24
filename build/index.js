@@ -20,25 +20,37 @@ var port = process.env.PORT || 8080;
 var router = express.Router();
 
 // GET /
-router.get('/', function (req, res) {
-    var localA = req.query.localA,
-        localB = req.query.localB;
-    var path;
-    var status;
-    var error = undefined;
+router.get('/', function _callee(req, res) {
+    var localA, localB, path, status, error;
+    return regeneratorRuntime.async(function _callee$(_context) {
+        while (1) {
+            switch (_context.prev = _context.next) {
+                case 0:
+                    localA = req.query.localA, localB = req.query.localB;
+                    error = undefined;
+                    _context.prev = 2;
+                    _context.next = 5;
+                    return regeneratorRuntime.awrap(algoTools.pathfind("G-165", "G-164"));
 
-    try {
-        algoTools.pathfind("G-165", "G-164");
-    } catch (e) {
-        error = { message: "Can't find path with those locals" };
-    }
-    /*
-        if (error == undefined) {
-            res.status(200).json(path);
-        } else {
-            res.status(404).json({ error });
+                case 5:
+                    path = _context.sent;
+
+                    console.log(path);
+                    _context.next = 12;
+                    break;
+
+                case 9:
+                    _context.prev = 9;
+                    _context.t0 = _context['catch'](2);
+
+                    error = { message: "Can't find path with those locals" };
+
+                case 12:
+                case 'end':
+                    return _context.stop();
+            }
         }
-    */
+    }, null, this, [[2, 9]]);
 });
 
 router.post('/corridors', function (req, res) {

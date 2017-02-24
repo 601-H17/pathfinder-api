@@ -19,7 +19,7 @@ var port = process.env.PORT || 8080;
 var router = express.Router();
 
 // GET /
-router.get('/', function(req, res) {
+router.get('/', async function(req, res) {
     var localA = req.query.localA,
         localB = req.query.localB;
     var path;
@@ -27,7 +27,8 @@ router.get('/', function(req, res) {
     var error = undefined;
 
     try {
-        algoTools.pathfind("G-165", "G-164");
+        path = await algoTools.pathfind("G-165", "G-164");
+        console.log(path);
     } catch (e) {
         error = { message: "Can't find path with those locals" };
     }

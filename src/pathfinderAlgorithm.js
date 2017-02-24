@@ -18,8 +18,9 @@ module.exports = {
 
             originalStart = ApiCallTools.getClassroom(startingPoint);
             originalEnd = ApiCallTools.getClassroom(destinationPoint);
-
-            return pathfindRec(startingPoint, destinationPoint, []);
+            var path = findAndPathfind(startingPoint, destinationPoint);
+            return path;
+            //return pathfindRec(startingPoint, destinationPoint, []);
             
             
             /*else {
@@ -58,15 +59,15 @@ async function pathfindRec(startingPoint, endingPoint, currentPath){
     var destinationFloor = await getClassFloor(endingPoint);
 
     if(startingFloor == destinationFloor){
-        try{
+        /*try{
             var path = findAndPathfind(startingPoint, endingPoint);
             currentPath.push(path);
         }
         catch(e){
 
-        }
-       
-        
+        }*/
+        var path = findAndPathfind(startingPoint, endingPoint);
+        return path;
     }
     else{
         staircases = findingSameFloorStaircases(startingFloor);
