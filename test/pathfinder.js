@@ -2,6 +2,7 @@ process.env.NODE_ENV = 'test';
 import 'babel-polyfill'; 
 
 let chai = require('chai');
+let expect = require('chai').expect;
 let chaiHttp = require('chai-http');
 let server = require('../build/index');
 let should = chai.should();
@@ -24,27 +25,23 @@ describe('api', function() {
     });
 });*/
 
-var assert = require('assert');
 var startLocal = 'G-165';
 var endLocal = 'G-164';
 var localPoint;
+
 var result = { path: 
-   [ [ -71.2874189411, 46.78601674403 ],
-     [ -71.28741905245, 46.78600546398 ],
-     [ -71.28729974824, 46.78601907973 ],
-     [ -71.28730301717, 46.78602796227 ] ],
-  weight: 0.011485373846850676 };
-var local = { type: 'Feature',
-  properties: { entrance: 'yes', ref: 'G-165' },
-  geometry: 
-   { type: 'Point',
-     coordinates: [ -71.2874189411, 46.78601674403 ] } };
+                [ [ -71.2874189411, 46.78601674403 ],
+                  [ -71.28741905245, 46.78600546398 ],
+                  [ -71.28729974824, 46.78601907973 ],
+                  [ -71.28730301717, 46.78602796227 ] ],
+              weight: 0.011485373846850676 };
+
 describe('Pathfinder', function() {
   describe('#pathfind(startLocal, endLocal)', function() {
-    it('should return a localization of the local when the local to find is given', async function(done) {
+    it('should return a localization of the local when the local to find is given', async () => {
       var path = await algorithmPathfinder.pathfind(startLocal, endLocal);
-      assert.equal(result, path);
-      done();
+      expect(path.path).to.eql(result.path);
+      expect(path.weight).to.eql(result.weight);
     });
   });
 });
