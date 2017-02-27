@@ -152,14 +152,14 @@ function findingSameFloorStaircases(currentFloor){
     return staircaseOnSameFloor;
 }
 
-function findingSameWingStaircases(currentWing) {
-    var staircasesOnSameWing;
+function findingSameWingAndFloorStaircases(currentWing, currentFloor) {
+    var staircasesOnSameWingAndFloor;
         for(var i = 0; i < staircases.length; i++){
-        if(staircases[i].floor.equals(currentFloor)){
-            staircaseOnSameWing.add(staircases[i]);
+        if(staircases[i].wing.equals(currentWing) && staircases[i].floor.equals(currentFloor)){
+            staircaseOnSameWingAndFloor.add(staircases[i]);
         }
     }
-    return staircaseOnSameWing;
+    return staircaseOnSameWingAndFloor;
 }
 
 function findAndPathfind(start, destination){
