@@ -19,7 +19,7 @@ module.exports = {
             originalStart = ApiCallTools.getClassroom(startingPoint);
             originalEnd = ApiCallTools.getClassroom(destinationPoint);
 
-            staircases = ApiCallTools.getAllStairs();
+            staircases = await ApiCallTools.getAllStairs();
 
             var path = findAndPathfind(startingPoint, destinationPoint);
             return path;
