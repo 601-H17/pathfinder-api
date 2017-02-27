@@ -18,6 +18,9 @@ module.exports = {
 
             originalStart = ApiCallTools.getClassroom(startingPoint);
             originalEnd = ApiCallTools.getClassroom(destinationPoint);
+
+            staircases = ApiCallTools.getAllStairs();
+
             var path = findAndPathfind(startingPoint, destinationPoint);
             return path;
             //return pathfindRecursive(startingPoint, destinationPoint, []);
