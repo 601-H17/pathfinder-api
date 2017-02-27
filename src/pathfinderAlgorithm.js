@@ -73,6 +73,7 @@ async function pathfindRecursive(startingPoint, endingPoint, fullPath){
     else if (startingWing == endingWing) {
         staircases = findingSameFloorStaircases(startingFloor);
             for(var i = 0; i < staircases.length; i++){
+                /*
                 if(startingFloor < endingFloor && endingFloor <= staircases[i].floor_max){
                     try{
                         fullPath.push(findAndPathfind(startingPoint, staircases[i]));
@@ -90,17 +91,33 @@ async function pathfindRecursive(startingPoint, endingPoint, fullPath){
                         fullPath.push(findAndPathfind(startingPoint, staircases[i]));
                         return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
                     } catch(e){ continue; }
-                }
-               
+                }   
                 else if (startingFloor > endingFloor && endingFloor <= staircases^[i].floor_min){
                     try{
                         fullPath.push(findAndPathfind(startingPoint, staircases[i]));
                         return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
                     } catch(e){ continue; }
+                }*/
+                for(var a = staircases[i].floor_min; a <= staircases[i].floor_max; a++){
+                    if(endingFloor == a){
+                        try{
+                            fullPath.push(findAndPathfind(startingPoint, staircases[i]));
+                            return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
+                        } catch(e){ continue; }
+                    }
                 }
+                // endingfloor > staircase
+                try{
+                    
+                    fullPath.push(findAndPathfind(startingPoint, staircases[i]));
+                    return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
+                } catch(e){ continue; } 
             }
     }
-    else if(startingFloor == endingFloor){
+    else if (startingFloor != endingFloor) {
+
+    }
+    else if (startingFloor == endingFloor){
         try{
             fullPath.push(findAndPathfind(startingPoint, endingPoint));
             return fullPath;
@@ -130,6 +147,16 @@ function findingSameFloorStaircases(currentFloor){
         }
     }
     return staircaseOnSameFloor;
+}
+
+function findingSameWingStaircases(currentWing) {
+    var staircasesOnSameWing;
+        for(var i = 0; i < staircases.length; i++){
+        if(staircases[i].floor.equals(currentFloor)){
+            staircaseOnSameWing.add(staircases[i]);
+        }
+    }
+    return staircaseOnSameWing;
 }
 
 function findAndPathfind(start, destination){
