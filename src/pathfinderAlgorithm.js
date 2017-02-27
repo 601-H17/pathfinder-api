@@ -16,8 +16,8 @@ module.exports = {
     pathfind: async function (startingPoint, destinationPoint) {
         try{
 
-            originalStart = ApiCallTools.getClassroom(startingPoint);
-            originalEnd = ApiCallTools.getClassroom(destinationPoint);
+            originalStart = await ApiCallTools.getClassroom(startingPoint);
+            originalEnd = await ApiCallTools.getClassroom(destinationPoint);
 
             staircases = await ApiCallTools.getAllStairs();
 
