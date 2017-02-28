@@ -22,31 +22,20 @@ module.exports = {
             staircases = await ApiCallTools.getAllStairs();
             console.log(staircases);
 
-            /*var path = findAndPathfind(startingPoint, destinationPoint);
-            return path;*/
             return pathfindRecursive(startingPoint, destinationPoint, []);
             
             
-            /*else {
-                staircases = findingSameFloorStaircases(currentFloor);
-                for(var i = 0; i < staircases.length; i++){
-                    var staircase = staircases[i];
-                    fullPath.push(findAndPathfind(startingPoint, staircase.name));
-                    //TODO: Faire attention: si le local n'est pas accessible -> dropper le fullPath et passer au prochain
-                    fullPath.push(findAndPathfind(staircase.name, destinationPoint));
-
-                    
-                    var totalWeight;
-                    for(var a = 0; a < fullPath.length; a++){
-                        totalWeight += fullPath[i].weight;
-                    }
-                    fullPath.push(totalWeight);
-                    if(totalWeight < shortestPath.weight){
-                        shortestPath = fullPath;
-                    }
-                    fullPath = [];
+            /*
+                var totalWeight;
+                for(var a = 0; a < fullPath.length; a++){
+                    totalWeight += fullPath[i].weight;
                 }
-            }*/
+                fullPath.push(totalWeight);
+                if(totalWeight < shortestPath.weight){
+                    shortestPath = fullPath;
+                }
+                fullPath = [];
+            */
         }
         catch(e){
             var error = e;
@@ -77,31 +66,6 @@ async function pathfindRecursive(startingPoint, endingPoint, fullPath){
     else if (startingWing == endingWing) {
         staircases = findingSameFloorStaircases(startingFloor);
             for(var i = 0; i < staircases.length; i++){
-                /*
-                if(startingFloor < endingFloor && endingFloor <= staircases[i].floor_max){
-                    try{
-                        fullPath.push(findAndPathfind(startingPoint, staircases[i]));
-                        return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
-                    } catch(e){ continue; }
-                }
-                else if(startingFloor > endingFloor && endingFloor >= staircases[i].floor_min){
-                    try{
-                        fullPath.push(findAndPathfind(startingPoint, staircases[i]));
-                        return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
-                    } catch(e){ continue; }
-                }
-                else if(startingFloor < endingFloor && endingFloor >= staircases[i].floor_max){
-                    try{
-                        fullPath.push(findAndPathfind(startingPoint, staircases[i]));
-                        return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
-                    } catch(e){ continue; }
-                }   
-                else if (startingFloor > endingFloor && endingFloor <= staircases[i].floor_min){
-                    try{
-                        fullPath.push(findAndPathfind(startingPoint, staircases[i]));
-                        return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
-                    } catch(e){ continue; }
-                }*/
                 for(var a = staircases[i].floor_min; a <= staircases[i].floor_max; a++){
                     if(endingFloor == a){
                         try{
@@ -110,12 +74,6 @@ async function pathfindRecursive(startingPoint, endingPoint, fullPath){
                         } catch(e){ continue; }
                     }
                 }
-               /* // endingfloor > staircase
-                try{
-                    
-                    fullPath.push(findAndPathfind(startingPoint, staircases[i]));
-                    return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
-                } catch(e){ continue; } */
             }
     }
 }
