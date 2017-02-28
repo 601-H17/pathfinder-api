@@ -21,7 +21,7 @@ var router = express.Router();
 
 // GET /
 router.get('/', function _callee(req, res) {
-    var localA, localB, path, status, error;
+    var localA, localB, fullpath, status, error, i;
     return regeneratorRuntime.async(function _callee$(_context) {
         while (1) {
             switch (_context.prev = _context.next) {
@@ -33,24 +33,31 @@ router.get('/', function _callee(req, res) {
                     return regeneratorRuntime.awrap(algoTools.pathfind("G-165", "G-164"));
 
                 case 5:
-                    path = _context.sent;
+                    fullpath = _context.sent;
 
-                    console.log(path);
-                    _context.next = 12;
+
+                    console.log(JSON.stringify(fullpath) + '\n');
+                    for (i = 0; i < fullpath.length - 1; i++) {
+                        console.log('Path ' + i + ': ' + fullpath[i].path);
+                        console.log('Weight ' + i + ': ' + fullpath[i].weight + '\n');
+                    }
+                    console.log('Total Weight : ' + fullpath[fullpath.length - 1].totalWeight + '\n');
+
+                    _context.next = 14;
                     break;
 
-                case 9:
-                    _context.prev = 9;
+                case 11:
+                    _context.prev = 11;
                     _context.t0 = _context['catch'](2);
 
                     error = { message: "Can't find path with those locals" };
 
-                case 12:
+                case 14:
                 case 'end':
                     return _context.stop();
             }
         }
-    }, null, this, [[2, 9]]);
+    }, null, this, [[2, 11]]);
 });
 
 router.post('/corridors', function (req, res) {

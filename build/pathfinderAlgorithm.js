@@ -14,6 +14,7 @@ var staircases;
 var classrooms;
 
 var shortestPath;
+
 module.exports = {
     pathfind: function pathfind(startingPoint, destinationPoint) {
         var error;
@@ -23,61 +24,47 @@ module.exports = {
                     case 0:
                         _context.prev = 0;
                         _context.next = 3;
-                        return regeneratorRuntime.awrap(ApiCallTools.getAllStairs());
+                        return regeneratorRuntime.awrap(ApiCallTools.getClassroom(startingPoint));
 
                     case 3:
+                        originalStart = _context.sent;
+                        _context.next = 6;
+                        return regeneratorRuntime.awrap(ApiCallTools.getClassroom(destinationPoint));
+
+                    case 6:
+                        originalEnd = _context.sent;
+                        _context.next = 9;
+                        return regeneratorRuntime.awrap(ApiCallTools.getAllStairs());
+
+                    case 9:
                         staircases = _context.sent;
+                        _context.next = 12;
+                        return regeneratorRuntime.awrap(pathfindRecursive(startingPoint, destinationPoint, []));
 
-                        console.log(staircases);
+                    case 12:
+                        return _context.abrupt('return', shortestPath);
 
-                        /*var path = findAndPathfind(startingPoint, destinationPoint);
-                        return path;*/
-                        //return pathfindRecursive(startingPoint, destinationPoint, []);
-
-
-                        /*else {
-                            staircases = findingSameFloorStaircases(currentFloor);
-                            for(var i = 0; i < staircases.length; i++){
-                                var staircase = staircases[i];
-                                fullPath.push(findAndPathfind(startingPoint, staircase.name));
-                                //TODO: Faire attention: si le local n'est pas accessible -> dropper le fullPath et passer au prochain
-                                fullPath.push(findAndPathfind(staircase.name, destinationPoint));
-                                  
-                                var totalWeight;
-                                for(var a = 0; a < fullPath.length; a++){
-                                    totalWeight += fullPath[i].weight;
-                                }
-                                fullPath.push(totalWeight);
-                                if(totalWeight < shortestPath.weight){
-                                    shortestPath = fullPath;
-                                }
-                                fullPath = [];
-                            }
-                        }*/
-                        _context.next = 10;
-                        break;
-
-                    case 7:
-                        _context.prev = 7;
+                    case 15:
+                        _context.prev = 15;
                         _context.t0 = _context['catch'](0);
                         error = _context.t0;
 
-                    case 10:
+                    case 18:
                         if (error != undefined) {
                             console.log(error);
                         }
 
-                    case 11:
+                    case 19:
                     case 'end':
                         return _context.stop();
                 }
             }
-        }, null, this, [[0, 7]]);
+        }, null, this, [[0, 15]]);
     }
 };
 
 function pathfindRecursive(startingPoint, endingPoint, fullPath) {
-    var startingFloor, endingFloor, startingWing, endingWing, i, a;
+    var startingFloor, endingFloor, startingWing, endingWing, staircasesOnSameFloor, i, a;
     return regeneratorRuntime.async(function pathfindRecursive$(_context2) {
         while (1) {
             switch (_context2.prev = _context2.next) {
@@ -104,79 +91,79 @@ function pathfindRecursive(startingPoint, endingPoint, fullPath) {
                     endingWing = _context2.sent;
 
                     if (!(startingFloor == endingFloor && startingWing == endingWing)) {
-                        _context2.next = 23;
+                        _context2.next = 16;
                         break;
                     }
 
-                    _context2.prev = 13;
-
-                    fullPath.push(findAndPathfind(startingPoint, endingPoint));
-                    return _context2.abrupt('return', fullPath);
-
-                case 18:
-                    _context2.prev = 18;
-                    _context2.t0 = _context2['catch'](13);
-
-                    console.log('How is this even real?');
-
-                case 21:
-                    _context2.next = 44;
+                    try {
+                        fullPath.push(findAndPathfind(startingPoint, endingPoint));
+                        keepShortestPath(fullPath);
+                    } catch (e) {
+                        console.log('How is this even real?' + '\n');
+                        console.log(e);
+                    }
+                    _context2.next = 37;
                     break;
 
-                case 23:
+                case 16:
                     if (!(startingWing == endingWing)) {
-                        _context2.next = 44;
+                        _context2.next = 37;
                         break;
                     }
 
-                    staircases = findingSameFloorStaircases(startingFloor);
+                    staircasesOnSameFloor = findingSameFloorStaircases(startingFloor);
+                    //console.log('SAME FLOOR: ' + JSON.stringify(staircasesOnSameFloor));
+
                     i = 0;
 
-                case 26:
-                    if (!(i < staircases.length)) {
-                        _context2.next = 44;
+                case 19:
+                    if (!(i < staircasesOnSameFloor.length)) {
+                        _context2.next = 37;
                         break;
                     }
 
-                    a = staircases[i].floor_min;
+                    a = staircasesOnSameFloor[i].floor_min;
 
-                case 28:
-                    if (!(a <= staircases[i].floor_max)) {
-                        _context2.next = 41;
+                case 21:
+                    if (!(a <= staircasesOnSameFloor[i].floor_max)) {
+                        _context2.next = 34;
                         break;
                     }
 
                     if (!(endingFloor == a)) {
-                        _context2.next = 38;
+                        _context2.next = 31;
                         break;
                     }
 
-                    _context2.prev = 30;
+                    _context2.prev = 23;
 
                     fullPath.push(findAndPathfind(startingPoint, staircases[i]));
-                    return _context2.abrupt('return', pathfindRecursive(staircases[i].name, endingPoint, fullPath));
+                    //return pathfindRecursive(staircasesOnSameFloor[i].name, endingPoint, fullPath);
+                    pathfindRecursive(staircasesOnSameFloor[i].name, endingPoint, fullPath);
+                    _context2.next = 31;
+                    break;
 
-                case 35:
-                    _context2.prev = 35;
-                    _context2.t1 = _context2['catch'](30);
-                    return _context2.abrupt('continue', 38);
+                case 28:
+                    _context2.prev = 28;
+                    _context2.t0 = _context2['catch'](23);
+                    return _context2.abrupt('continue', 31);
 
-                case 38:
+                case 31:
                     a++;
-                    _context2.next = 28;
+                    _context2.next = 21;
                     break;
 
-                case 41:
+                case 34:
                     i++;
-                    _context2.next = 26;
+                    _context2.next = 19;
                     break;
 
-                case 44:
+                case 37:
                 case 'end':
                     return _context2.stop();
             }
         }
-    }, null, this, [[13, 18], [30, 35]]);
+    }, null, this, [[23, 28]]);
 }
 
 function findLocalGeo(localToFind) {
@@ -191,23 +178,24 @@ function findLocalGeo(localToFind) {
 }
 
 function findingSameFloorStaircases(currentFloor) {
-    var staircasesOnSameFloor;
+    var staircasesOnSameFloor = [];
+    //console.log('AVANT: ' + JSON.stringify(staircases) + '\n');
     for (var i = 0; i < staircases.length; i++) {
-        if (staircases[i].floor.equals(currentFloor)) {
-            staircaseOnSameFloor.add(staircases[i]);
+        if (currentFloor >= staircases[i].floor_min && currentFloor <= staircases[i].floor_max) {
+            staircasesOnSameFloor.push(staircases[i]);
         }
     }
-    return staircaseOnSameFloor;
+    return staircasesOnSameFloor;
 }
 
 function findingSameWingAndFloorStaircases(currentWing, currentFloor) {
-    var staircasesOnSameWingAndFloor;
+    var staircasesOnSameWingAndFloor = [];
     for (var i = 0; i < staircases.length; i++) {
-        if (staircases[i].wing.equals(currentWing) && staircases[i].floor.equals(currentFloor)) {
-            staircaseOnSameWingAndFloor.add(staircases[i]);
+        if ( /*staircases[i].wing.equals(currentWing) && */staircases[i].floor == currentFloor) {
+            staircasesOnSameWingAndFloor.push(staircases[i]);
         }
     }
-    return staircaseOnSameWingAndFloor;
+    return staircasesOnSameWingAndFloor;
 }
 
 function findAndPathfind(start, destination) {
@@ -222,17 +210,84 @@ function getLocalFloor(localName) {
         while (1) {
             switch (_context3.prev = _context3.next) {
                 case 0:
-                    _context3.next = 2;
+                    if (!(localName.charAt(1) == 'E')) {
+                        _context3.next = 6;
+                        break;
+                    }
+
+                    _context3.next = 3;
+                    return regeneratorRuntime.awrap(ApiCallTools.getStaircase(localName));
+
+                case 3:
+                    localObj = _context3.sent;
+                    _context3.next = 9;
+                    break;
+
+                case 6:
+                    _context3.next = 8;
                     return regeneratorRuntime.awrap(ApiCallTools.getClassroom(localName));
 
-                case 2:
+                case 8:
                     localObj = _context3.sent;
-                    return _context3.abrupt('return', destObj.floor);
 
-                case 4:
+                case 9:
+                    console.log(JSON.stringify(localObj) + '\n');
+                    return _context3.abrupt('return', localObj.floor);
+
+                case 11:
                 case 'end':
                     return _context3.stop();
             }
         }
     }, null, this);
+}
+
+function getLocalWing(localName) {
+    var localObj;
+    return regeneratorRuntime.async(function getLocalWing$(_context4) {
+        while (1) {
+            switch (_context4.prev = _context4.next) {
+                case 0:
+                    if (!(localName.charAt(1) == 'E')) {
+                        _context4.next = 6;
+                        break;
+                    }
+
+                    _context4.next = 3;
+                    return regeneratorRuntime.awrap(ApiCallTools.getStaircase(localName));
+
+                case 3:
+                    localObj = _context4.sent;
+                    _context4.next = 9;
+                    break;
+
+                case 6:
+                    _context4.next = 8;
+                    return regeneratorRuntime.awrap(ApiCallTools.getClassroom(localName));
+
+                case 8:
+                    localObj = _context4.sent;
+
+                case 9:
+                    return _context4.abrupt('return', localObj.wing);
+
+                case 10:
+                case 'end':
+                    return _context4.stop();
+            }
+        }
+    }, null, this);
+}
+
+function keepShortestPath(fullPath) {
+    var totalWeight = 0;
+    for (var i = 0; i < fullPath.length; i++) {
+        totalWeight += fullPath[i].weight;
+    }
+    fullPath.push({ "totalWeight": totalWeight });
+    if (shortestPath === undefined) {
+        shortestPath = fullPath;
+    } else if (totalWeight < shortestPath.weight) {
+        shortestPath = fullPath;
+    }
 }

@@ -68,30 +68,52 @@ module.exports = {
                 }
             }
         }, null, this);
+    },
+
+    getStaircase: function getStaircase(staircaseName) {
+        var staircasePath, staircase;
+        return regeneratorRuntime.async(function getStaircase$(_context4) {
+            while (1) {
+                switch (_context4.prev = _context4.next) {
+                    case 0:
+                        staircasePath = '/api/stair/' + staircaseName;
+                        _context4.next = 3;
+                        return regeneratorRuntime.awrap(getApiResponse(staircasePath));
+
+                    case 3:
+                        staircase = _context4.sent;
+                        return _context4.abrupt('return', staircase);
+
+                    case 5:
+                    case 'end':
+                        return _context4.stop();
+                }
+            }
+        }, null, this);
     }
 
 };
 
 function getApiResponse(apiPath) {
     var response;
-    return regeneratorRuntime.async(function getApiResponse$(_context4) {
+    return regeneratorRuntime.async(function getApiResponse$(_context5) {
         while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context5.prev = _context5.next) {
                 case 0:
-                    _context4.next = 2;
+                    _context5.next = 2;
                     return regeneratorRuntime.awrap(fetch(csfUrl + apiPath, { headers: { 'Authorization': 'Token token=' + authToken } }));
 
                 case 2:
-                    response = _context4.sent;
-                    _context4.next = 5;
+                    response = _context5.sent;
+                    _context5.next = 5;
                     return regeneratorRuntime.awrap(response.json());
 
                 case 5:
-                    return _context4.abrupt('return', _context4.sent);
+                    return _context5.abrupt('return', _context5.sent);
 
                 case 6:
                 case 'end':
-                    return _context4.stop();
+                    return _context5.stop();
             }
         }
     }, null, this);

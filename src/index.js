@@ -22,13 +22,20 @@ var router = express.Router();
 router.get('/', async function(req, res) {
     var localA = req.query.localA,
         localB = req.query.localB;
-    var path;
+    var fullpath;
     var status;
     var error = undefined;
 
     try {
-        path = await algoTools.pathfind("G-165", "G-164");
-        console.log(path);
+        fullpath = await algoTools.pathfind("G-165", "G-164");
+
+        console.log(JSON.stringify(fullpath) + '\n');
+        for(var i = 0; i < fullpath.length - 1; i++){
+            console.log('Path ' + i + ': '+ fullpath[i].path);
+            console.log('Weight ' + i + ': ' + fullpath[i].weight + '\n');
+        }
+        console.log('Total Weight : ' + fullpath[fullpath.length-1].totalWeight + '\n');
+
     } catch (e) {
         error = { message: "Can't find path with those locals" };
     }

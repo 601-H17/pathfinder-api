@@ -12,42 +12,25 @@ var staircases;
 var classrooms;
 
 var shortestPath;
+
 module.exports = {
     pathfind: async function (startingPoint, destinationPoint) {
         try{
-
             originalStart = await ApiCallTools.getClassroom(startingPoint);
             originalEnd = await ApiCallTools.getClassroom(destinationPoint);
 
             staircases = await ApiCallTools.getAllStairs();
-            console.log(staircases);
 
-            return pathfindRecursive(startingPoint, destinationPoint, []);
-            
-            
-            /*
-                var totalWeight;
-                for(var a = 0; a < fullPath.length; a++){
-                    totalWeight += fullPath[i].weight;
-                }
-                fullPath.push(totalWeight);
-                if(totalWeight < shortestPath.weight){
-                    shortestPath = fullPath;
-                }
-                fullPath = [];
-            */
-        }
-        catch(e){
-            var error = e;
-        }
+            await pathfindRecursive(startingPoint, destinationPoint, []);
+            return shortestPath;
+        } catch(e){ var error = e; }
         if (error != undefined){
-            console.log(error);
+           console.log(error);
         }
     }
 }
 
 async function pathfindRecursive(startingPoint, endingPoint, fullPath){
-
     var startingFloor = await getLocalFloor(startingPoint);
     var endingFloor = await getLocalFloor(endingPoint);
 
@@ -57,20 +40,23 @@ async function pathfindRecursive(startingPoint, endingPoint, fullPath){
     if(startingFloor == endingFloor && startingWing == endingWing){
         try{
             fullPath.push(findAndPathfind(startingPoint, endingPoint));
-            return fullPath;
+            keepShortestPath(fullPath);
         }
         catch(e){
-            console.log('How is this even real?');
+            console.log('How is this even real?' + '\n');
+            console.log(e);
         }
     }
     else if (startingWing == endingWing) {
-        staircases = findingSameFloorStaircases(startingFloor);
-            for(var i = 0; i < staircases.length; i++){
-                for(var a = staircases[i].floor_min; a <= staircases[i].floor_max; a++){
+        var staircasesOnSameFloor = findingSameFloorStaircases(startingFloor);
+        //console.log('SAME FLOOR: ' + JSON.stringify(staircasesOnSameFloor));
+            for(var i = 0; i < staircasesOnSameFloor.length; i++){
+                for(var a = staircasesOnSameFloor[i].floor_min; a <= staircasesOnSameFloor[i].floor_max; a++){
                     if(endingFloor == a){
                         try{
                             fullPath.push(findAndPathfind(startingPoint, staircases[i]));
-                            return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
+                            //return pathfindRecursive(staircasesOnSameFloor[i].name, endingPoint, fullPath);
+                            pathfindRecursive(staircasesOnSameFloor[i].name, endingPoint, fullPath);
                         } catch(e){ continue; }
                     }
                 }
@@ -90,23 +76,24 @@ function findLocalGeo(localToFind) {
 }
 
 function findingSameFloorStaircases(currentFloor){
-    var staircasesOnSameFloor;
+    var staircasesOnSameFloor = [];
+    //console.log('AVANT: ' + JSON.stringify(staircases) + '\n');
     for(var i = 0; i < staircases.length; i++){
-        if(staircases[i].floor.equals(currentFloor)){
-            staircaseOnSameFloor.add(staircases[i]);
+        if(currentFloor >= staircases[i].floor_min && currentFloor <= staircases[i].floor_max){
+            staircasesOnSameFloor.push(staircases[i]);
         }
     }
-    return staircaseOnSameFloor;
+    return staircasesOnSameFloor;
 }
 
 function findingSameWingAndFloorStaircases(currentWing, currentFloor) {
-    var staircasesOnSameWingAndFloor;
+    var staircasesOnSameWingAndFloor = [];
         for(var i = 0; i < staircases.length; i++){
-        if(staircases[i].wing.equals(currentWing) && staircases[i].floor.equals(currentFloor)){
-            staircaseOnSameWingAndFloor.add(staircases[i]);
+        if(/*staircases[i].wing.equals(currentWing) && */staircases[i].floor == currentFloor){
+            staircasesOnSameWingAndFloor.push(staircases[i]);
         }
     }
-    return staircaseOnSameWingAndFloor;
+    return staircasesOnSameWingAndFloor;
 }
 
 function findAndPathfind(start, destination){
@@ -116,6 +103,32 @@ function findAndPathfind(start, destination){
 }
 
 async function getLocalFloor(localName){
-    var localObj = await ApiCallTools.getClassroom(localName);
-    return destObj.floor;
+    var localObj;
+    if(localName.charAt(1) == 'E'){
+        localObj = await ApiCallTools.getStaircase(localName);
+    } else{ localObj = await ApiCallTools.getClassroom(localName);}
+    console.log(JSON.stringify(localObj) + '\n');
+    return localObj.floor;
+}
+
+async function getLocalWing(localName){
+    var localObj;
+    if(localName.charAt(1) == 'E'){
+        localObj = await ApiCallTools.getStaircase(localName);
+    } else{ localObj = await ApiCallTools.getClassroom(localName); }
+    return localObj.wing;
+}
+
+function keepShortestPath(fullPath) {
+    var totalWeight = 0;
+    for(var i = 0; i < fullPath.length; i++){
+        totalWeight += fullPath[i].weight;
+    }
+    fullPath.push({"totalWeight" : totalWeight});
+    if(shortestPath === undefined){
+        shortestPath = fullPath;
+    }
+    else if(totalWeight < shortestPath.weight){
+        shortestPath = fullPath;
+    }
 }
