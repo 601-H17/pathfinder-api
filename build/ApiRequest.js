@@ -54,7 +54,7 @@ module.exports = {
             while (1) {
                 switch (_context3.prev = _context3.next) {
                     case 0:
-                        allStairsPath = '/api/staircases';
+                        allStairsPath = '/api/stairs';
                         _context3.next = 3;
                         return regeneratorRuntime.awrap(getApiResponse(allStairsPath));
 

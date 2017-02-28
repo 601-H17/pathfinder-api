@@ -20,10 +20,11 @@ module.exports = {
             originalEnd = await ApiCallTools.getClassroom(destinationPoint);
 
             staircases = await ApiCallTools.getAllStairs();
+            console.log(staircases);
 
-            var path = findAndPathfind(startingPoint, destinationPoint);
-            return path;
-            //return pathfindRecursive(startingPoint, destinationPoint, []);
+            /*var path = findAndPathfind(startingPoint, destinationPoint);
+            return path;*/
+            return pathfindRecursive(startingPoint, destinationPoint, []);
             
             
             /*else {
@@ -95,7 +96,7 @@ async function pathfindRecursive(startingPoint, endingPoint, fullPath){
                         return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
                     } catch(e){ continue; }
                 }   
-                else if (startingFloor > endingFloor && endingFloor <= staircases^[i].floor_min){
+                else if (startingFloor > endingFloor && endingFloor <= staircases[i].floor_min){
                     try{
                         fullPath.push(findAndPathfind(startingPoint, staircases[i]));
                         return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
@@ -109,25 +110,13 @@ async function pathfindRecursive(startingPoint, endingPoint, fullPath){
                         } catch(e){ continue; }
                     }
                 }
-                // endingfloor > staircase
+               /* // endingfloor > staircase
                 try{
                     
                     fullPath.push(findAndPathfind(startingPoint, staircases[i]));
                     return pathfindRecursive(staircases[i].name, endingPoint, fullPath);
-                } catch(e){ continue; } 
+                } catch(e){ continue; } */
             }
-    }
-    else if (startingFloor != endingFloor) {
-
-    }
-    else if (startingFloor == endingFloor){
-        try{
-            fullPath.push(findAndPathfind(startingPoint, endingPoint));
-            return fullPath;
-        }
-        catch(e){
-            
-        }
     }
 }
 

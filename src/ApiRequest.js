@@ -16,7 +16,7 @@ module.exports = {
     },
 
     getAllStairs: async function(){
-        let allStairsPath = '/api/staircases';
+        let allStairsPath = '/api/stairs';
         let staircases = await getApiResponse(allStairsPath);
         return staircases;
     }
