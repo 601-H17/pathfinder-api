@@ -37,12 +37,25 @@ var result = { path:
               weight: 0.011485373846850676 };
 
 describe('Pathfinder', function() {
-  describe('#pathfind(startLocal, endLocal)', function() {
-    it('should return a localization of the local when the local to find is given', async () => {
-      var path = await algorithmPathfinder.pathfind(startLocal, endLocal);
-      expect(path.path).to.eql(result.path);
-      expect(path.weight).to.eql(result.weight);
+    describe('#pathfind(startLocal, endLocal)', function() {
+        it('should return a localization of the local when the local to find is given', async () => {
+        var path = await algorithmPathfinder.pathfind(startLocal, endLocal);
+        expect(path.path).to.eql(result.path);
+        expect(path.weight).to.eql(result.weight);
+        });
     });
-  });
+    
+    describe('#pathfind(startLocal, endLocal) with higher floor and same wing', function() {
+        it('should return a localization of the local when the local was find', async () => {
+            const RESULT_LENGTH = 2;
+
+            var fullpath = await algorithmPathfinder.pathfind(startLocal, endLocal);
+            
+            expect(fullpath.path).to.eql(resultTestHigherFloor.path);
+            expect(fullpath.weight).to.eql(resultTestHigherFloor.weight);
+            expect(fullpath).to.have.lengthOf(RESULT_LENGTH)
+        });
+    });
+    
 });
 
