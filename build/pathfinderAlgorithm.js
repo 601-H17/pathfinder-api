@@ -112,8 +112,6 @@ function pathfindRecursive(startingPoint, endingPoint, fullPath) {
                     }
 
                     staircasesOnSameFloor = findingSameFloorStaircases(startingFloor);
-                    //console.log('SAME FLOOR: ' + JSON.stringify(staircasesOnSameFloor));
-
                     i = 0;
 
                 case 19:
@@ -179,7 +177,6 @@ function findLocalGeo(localToFind) {
 
 function findingSameFloorStaircases(currentFloor) {
     var staircasesOnSameFloor = [];
-    //console.log('AVANT: ' + JSON.stringify(staircases) + '\n');
     for (var i = 0; i < staircases.length; i++) {
         if (currentFloor >= staircases[i].floor_min && currentFloor <= staircases[i].floor_max) {
             staircasesOnSameFloor.push(staircases[i]);

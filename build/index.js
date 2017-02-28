@@ -29,10 +29,12 @@ router.get('/', function _callee(req, res) {
                     localA = req.query.localA, localB = req.query.localB;
                     error = undefined;
                     _context.prev = 2;
-                    _context.next = 5;
+
+                    console.log('allo');
+                    _context.next = 6;
                     return regeneratorRuntime.awrap(algoTools.pathfind("G-165", "G-164"));
 
-                case 5:
+                case 6:
                     fullpath = _context.sent;
 
 
@@ -43,21 +45,21 @@ router.get('/', function _callee(req, res) {
                     }
                     console.log('Total Weight : ' + fullpath[fullpath.length - 1].totalWeight + '\n');
 
-                    _context.next = 14;
+                    _context.next = 15;
                     break;
 
-                case 11:
-                    _context.prev = 11;
+                case 12:
+                    _context.prev = 12;
                     _context.t0 = _context['catch'](2);
 
                     error = { message: "Can't find path with those locals" };
 
-                case 14:
+                case 15:
                 case 'end':
                     return _context.stop();
             }
         }
-    }, null, this, [[2, 11]]);
+    }, null, this, [[2, 12]]);
 });
 
 router.post('/corridors', function (req, res) {
