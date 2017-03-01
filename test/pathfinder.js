@@ -27,22 +27,18 @@ describe('api', function() {
 
 var startLocal = 'G-165';
 var endLocal = 'G-164';
+const FIRST_FLOOR_LOCAL = 'G-165';;
+const SAME_FLOOR_LOCAL = 'G-164';;
+const EXPECTED_PATHFIND_RESULT = [{ path: 
+                                        [ [ -71.2874189411, 46.78601674403 ],
+                                        [ -71.28741905245, 46.78600546398 ],
+                                        [ -71.28729974824, 46.78601907973 ],
+                                        [ -71.28730301717, 46.78602796227 ] ],
+                                   weight: 0.011485373846850676 },
+                                   { totalWeight: 0.011485373846850676 }];
 var localPoint;
 
-
-
 describe('Pathfinder of locals on same floor and wing', function() {
-    beforeEach(function(){
-        const FIRST_FLOOR_LOCAL = 'G-165';
-        const SAME_FLOOR_LOCAL = 'G-164';
-        const EXPECTED_PATHFIND_RESULT = { path: 
-                                                [ [ -71.2874189411, 46.78601674403 ],
-                                                [ -71.28741905245, 46.78600546398 ],
-                                                [ -71.28729974824, 46.78601907973 ],
-                                                [ -71.28730301717, 46.78602796227 ] ],
-                                            weight: 0.011485373846850676 };
-    });
-
     describe('#pathfind(startLocal, endLocal)', function() {
         context('when the local to find is given', function(){
             it('should return the path to the local', async () => {
@@ -55,8 +51,10 @@ describe('Pathfinder of locals on same floor and wing', function() {
                 var fullpath = await algorithmPathfinder.pathfind(FIRST_FLOOR_LOCAL, SAME_FLOOR_LOCAL);
 
                 //Assert
-                expect(fullpath).to.have.property(PATH_PROPERTY , result.path);
-                expect(fullpath).to.have,property(WEIGHT_PROPERTY , result.weight);
+                expect(fullpath[0]).to.have.ownProperty(PATH_PROPERTY);
+                expect(fullpath[0].path).to.eql(EXPECTED_PATHFIND_RESULT[0].path);
+                expect(fullpath[0]).to.have.ownProperty(WEIGHT_PROPERTY);
+                expect(fullpath[0].weight).to.eql(EXPECTED_PATHFIND_RESULT[0].weight);
             });
         });
     });
@@ -71,10 +69,11 @@ describe('Pathfinder of locals on same floor and wing', function() {
 
                 //Act
                 var fullpath = await algorithmPathfinder.pathfind(FIRST_FLOOR_LOCAL, SAME_FLOOR_LOCAL);
-
+      
                 //Assert
                 expect(fullpath).to.have.lengthOf(RESULT_LENGTH);
-                expect(fullpath).to.have.property(TOTAL_WEIGHT_PROPERTY, EXPECTED_PATHFIND_RESULT.weight);
+                expect(fullpath[1]).to.have.ownProperty(TOTAL_WEIGHT_PROPERTY);
+                expect(fullpath[1].totalWeight).to.eql(EXPECTED_PATHFIND_RESULT[1].totalWeight);
             });
         });
     });
