@@ -7,7 +7,7 @@ exports.app = app;
 var bodyParser = require('body-parser');
 var algoTools = require('./pathfinderAlgorithm');
 
-var geojson = require('../corridors.json');
+var geojson = require('../json_files/corridors.json');
 
 // Configure body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,34 +30,33 @@ router.get('/', function _callee(req, res) {
                     error = undefined;
                     _context.prev = 2;
                     _context.next = 5;
-                    return regeneratorRuntime.awrap(algoTools.pathfind("G-165", "G-164"));
+                    return regeneratorRuntime.awrap(algoTools.pathfind("G-165", "G-273"));
 
                 case 5:
                     fullpath = _context.sent;
 
 
-                    console.log(JSON.stringify(fullpath) + '\n');
+                    console.log('\n' + JSON.stringify(fullpath) + '\n');
                     for (i = 0; i < fullpath.length - 1; i++) {
-                        console.log('Path ' + i + ': ' + fullpath[i].path);
-                        console.log('Weight ' + i + ': ' + fullpath[i].weight + '\n');
+                        console.log('Path ' + i + ': ' + fullpath[i].path + '\n');
+                        console.log('Floor of the path  #' + i + ': ' + fullpath[i].floorPath + '\n');
                     }
-                    console.log('Total Weight : ' + fullpath[fullpath.length - 1].totalWeight + '\n');
 
-                    _context.next = 14;
+                    _context.next = 13;
                     break;
 
-                case 11:
-                    _context.prev = 11;
+                case 10:
+                    _context.prev = 10;
                     _context.t0 = _context['catch'](2);
 
                     error = { message: "Can't find path with those locals" };
 
-                case 14:
+                case 13:
                 case 'end':
                     return _context.stop();
             }
         }
-    }, null, this, [[2, 11]]);
+    }, null, this, [[2, 10]]);
 });
 
 router.post('/corridors', function (req, res) {

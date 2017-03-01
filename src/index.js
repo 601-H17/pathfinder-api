@@ -5,7 +5,7 @@ exports.app = app;
 var bodyParser = require('body-parser');
 var algoTools = require('./pathfinderAlgorithm');
 
-var geojson = require('../corridors.json');
+var geojson = require('../json_files/corridors.json');
 
 
 // Configure body-parser
@@ -27,14 +27,13 @@ router.get('/', async function(req, res) {
     var error = undefined;
 
     try {
-        fullpath = await algoTools.pathfind("G-165", "G-164");
+        fullpath = await algoTools.pathfind("G-165", "G-273");
 
-        console.log(JSON.stringify(fullpath) + '\n');
+        console.log( '\n' + JSON.stringify(fullpath) + '\n');
         for(var i = 0; i < fullpath.length - 1; i++){
-            console.log('Path ' + i + ': '+ fullpath[i].path);
-            console.log('Weight ' + i + ': ' + fullpath[i].weight + '\n');
+            console.log('Path ' + i + ': '+ fullpath[i].path + '\n');
+            console.log('Floor of the path  #' + i + ': ' + fullpath[i].floorPath + '\n');
         }
-        console.log('Total Weight : ' + fullpath[fullpath.length-1].totalWeight + '\n');
 
     } catch (e) {
         error = { message: "Can't find path with those locals" };

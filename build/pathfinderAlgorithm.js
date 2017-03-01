@@ -3,9 +3,6 @@
 var ApiCallTools = require('./ApiRequest');
 var PathFinder = require('geojson-path-finder');
 var fs = require('fs');
-var geojson = require('../corridors.json');
-
-var pathFinder = new PathFinder(geojson);
 
 var originalStart = void 0;
 var originalEnd = void 0;
@@ -13,7 +10,17 @@ var originalEnd = void 0;
 var staircases;
 var classrooms;
 
-var shortestPath;
+var shortestPath = undefined;
+
+var corridorsModuleByFloor = {
+    1: '../json_files/corridors.json',
+    2: '../json_files/corridors2.json'
+};
+
+var corridorsFileByFloor = {
+    1: './json_files/corridors.json',
+    2: './json_files/corridors2.json'
+};
 
 module.exports = {
     pathfind: function pathfind(startingPoint, destinationPoint) {
@@ -39,7 +46,7 @@ module.exports = {
                     case 9:
                         staircases = _context.sent;
                         _context.next = 12;
-                        return regeneratorRuntime.awrap(pathfindRecursive(startingPoint, destinationPoint, []));
+                        return regeneratorRuntime.awrap(pathfindRecursive(startingPoint, destinationPoint, originalStart.floor, []));
 
                     case 12:
                         return _context.abrupt('return', shortestPath);
@@ -63,116 +70,132 @@ module.exports = {
     }
 };
 
-function pathfindRecursive(startingPoint, endingPoint, fullPath) {
-    var startingFloor, endingFloor, startingWing, endingWing, staircasesOnSameFloor, i, a;
+function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullPath) {
+    var startingObj, endingObj, staircasesOnSameFloor, i, a;
     return regeneratorRuntime.async(function pathfindRecursive$(_context2) {
         while (1) {
             switch (_context2.prev = _context2.next) {
                 case 0:
                     _context2.next = 2;
-                    return regeneratorRuntime.awrap(getLocalFloor(startingPoint));
+                    return regeneratorRuntime.awrap(getLocal(startingPoint));
 
                 case 2:
-                    startingFloor = _context2.sent;
+                    startingObj = _context2.sent;
                     _context2.next = 5;
-                    return regeneratorRuntime.awrap(getLocalFloor(endingPoint));
+                    return regeneratorRuntime.awrap(getLocal(endingPoint));
 
                 case 5:
-                    endingFloor = _context2.sent;
-                    _context2.next = 8;
-                    return regeneratorRuntime.awrap(getLocalWing(startingPoint));
+                    endingObj = _context2.sent;
 
-                case 8:
-                    startingWing = _context2.sent;
-                    _context2.next = 11;
-                    return regeneratorRuntime.awrap(getLocalWing(endingPoint));
-
-                case 11:
-                    endingWing = _context2.sent;
-
-                    if (!(startingFloor == endingFloor && startingWing == endingWing)) {
-                        _context2.next = 16;
+                    if (!(currentFloor == endingObj.floor && startingObj.wing == endingObj.wing)) {
+                        _context2.next = 10;
                         break;
                     }
 
                     try {
-                        fullPath.push(findAndPathfind(startingPoint, endingPoint));
+                        fullPath.push(findAndPathfind(startingObj, endingObj));
                         keepShortestPath(fullPath);
                     } catch (e) {
                         console.log('How is this even real?' + '\n');
                         console.log(e);
                     }
-                    _context2.next = 37;
+                    _context2.next = 33;
                     break;
 
-                case 16:
-                    if (!(startingWing == endingWing)) {
-                        _context2.next = 37;
+                case 10:
+                    if (!(startingObj.wing == endingObj.wing)) {
+                        _context2.next = 33;
                         break;
                     }
 
-                    staircasesOnSameFloor = findingSameFloorStaircases(startingFloor);
+                    staircasesOnSameFloor = findingSameFloorStaircases(startingObj.floor);
                     i = 0;
 
-                case 19:
+                case 13:
                     if (!(i < staircasesOnSameFloor.length)) {
-                        _context2.next = 37;
+                        _context2.next = 33;
+                        break;
+                    }
+
+                    if (!(currentFloor >= staircasesOnSameFloor[i].floor_min)) {
+                        _context2.next = 30;
                         break;
                     }
 
                     a = staircasesOnSameFloor[i].floor_min;
 
-                case 21:
+                case 16:
                     if (!(a <= staircasesOnSameFloor[i].floor_max)) {
-                        _context2.next = 34;
+                        _context2.next = 30;
                         break;
                     }
 
-                    if (!(endingFloor == a)) {
-                        _context2.next = 31;
+                    if (!(endingObj.floor == a)) {
+                        _context2.next = 27;
                         break;
                     }
 
-                    _context2.prev = 23;
+                    _context2.prev = 18;
 
-                    fullPath.push(findAndPathfind(startingPoint, staircases[i]));
+                    fullPath.push(findAndPathfind(startingObj, staircasesOnSameFloor[i]));
                     //return pathfindRecursive(staircasesOnSameFloor[i].name, endingPoint, fullPath);
-                    pathfindRecursive(staircasesOnSameFloor[i].name, endingPoint, fullPath);
-                    _context2.next = 31;
+                    _context2.next = 22;
+                    return regeneratorRuntime.awrap(pathfindRecursive(staircasesOnSameFloor[i].name, endingObj.name, a, fullPath));
+
+                case 22:
+                    _context2.next = 27;
                     break;
 
-                case 28:
-                    _context2.prev = 28;
-                    _context2.t0 = _context2['catch'](23);
-                    return _context2.abrupt('continue', 31);
+                case 24:
+                    _context2.prev = 24;
+                    _context2.t0 = _context2['catch'](18);
+                    return _context2.abrupt('continue', 27);
 
-                case 31:
+                case 27:
                     a++;
-                    _context2.next = 21;
+                    _context2.next = 16;
                     break;
 
-                case 34:
+                case 30:
                     i++;
-                    _context2.next = 19;
+                    _context2.next = 13;
                     break;
 
-                case 37:
+                case 33:
                 case 'end':
                     return _context2.stop();
             }
         }
-    }, null, this, [[23, 28]]);
+    }, null, this, [[18, 24]]);
 }
 
-function findLocalGeo(localToFind) {
-    var geojsonFile = './corridors.json';
-    var file = fs.readFileSync(geojsonFile);
+function findLocalGeo(localToFind, floor) {
+    var file = fs.readFileSync(corridorsFileByFloor[floor]);
     var obj = JSON.parse(file);
     for (var i = 0; i < obj.features.length; i++) {
-        if (obj.features[i].geometry.type == "Point" && obj.features[i].properties.ref != null && obj.features[i].properties.ref == localToFind) {
+        if (obj.features[i].geometry.type == "Point" && obj.features[i].properties.ref != null && obj.features[i].properties.ref == localToFind.name) {
             return obj.features[i];
         }
     }
+}
+
+function findAndPathfind(start, destination) {
+    var pathFloor;
+    try {
+        pathFloor = start.floor;
+        var geoFile = require(corridorsModuleByFloor[pathFloor]);
+    } catch (e) {
+        pathFloor = destination.floor;
+        var geoFile = require(corridorsModuleByFloor[pathFloor]);
+    }
+
+    var startGeo = findLocalGeo(start, pathFloor);
+    var destinationGeo = findLocalGeo(destination, pathFloor);
+
+    var pathfinder = new PathFinder(geoFile);
+    var path = pathfinder.findPath(startGeo, destinationGeo);
+    path['floorPath'] = pathFloor;
+    return path;
 }
 
 function findingSameFloorStaircases(currentFloor) {
@@ -195,15 +218,9 @@ function findingSameWingAndFloorStaircases(currentWing, currentFloor) {
     return staircasesOnSameWingAndFloor;
 }
 
-function findAndPathfind(start, destination) {
-    var start = findLocalGeo(start);
-    var finish = findLocalGeo(destination);
-    return pathFinder.findPath(start, finish);
-}
-
-function getLocalFloor(localName) {
+function getLocal(localName) {
     var localObj;
-    return regeneratorRuntime.async(function getLocalFloor$(_context3) {
+    return regeneratorRuntime.async(function getLocal$(_context3) {
         while (1) {
             switch (_context3.prev = _context3.next) {
                 case 0:
@@ -228,49 +245,11 @@ function getLocalFloor(localName) {
                     localObj = _context3.sent;
 
                 case 9:
-                    console.log(JSON.stringify(localObj) + '\n');
-                    return _context3.abrupt('return', localObj.floor);
-
-                case 11:
-                case 'end':
-                    return _context3.stop();
-            }
-        }
-    }, null, this);
-}
-
-function getLocalWing(localName) {
-    var localObj;
-    return regeneratorRuntime.async(function getLocalWing$(_context4) {
-        while (1) {
-            switch (_context4.prev = _context4.next) {
-                case 0:
-                    if (!(localName.charAt(1) == 'E')) {
-                        _context4.next = 6;
-                        break;
-                    }
-
-                    _context4.next = 3;
-                    return regeneratorRuntime.awrap(ApiCallTools.getStaircase(localName));
-
-                case 3:
-                    localObj = _context4.sent;
-                    _context4.next = 9;
-                    break;
-
-                case 6:
-                    _context4.next = 8;
-                    return regeneratorRuntime.awrap(ApiCallTools.getClassroom(localName));
-
-                case 8:
-                    localObj = _context4.sent;
-
-                case 9:
-                    return _context4.abrupt('return', localObj.wing);
+                    return _context3.abrupt('return', localObj);
 
                 case 10:
                 case 'end':
-                    return _context4.stop();
+                    return _context3.stop();
             }
         }
     }, null, this);
