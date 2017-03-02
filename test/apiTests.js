@@ -9,6 +9,7 @@ let server = require('../build/index');
 let should = chai.should();
 let algorithmPathfinder = require('../build/pathfinderAlgorithm')
 let request = require('supertest')('https://csf-geo-app.herokuapp.com');
+let ApiCallTools = require('../src/ApiRequest');
 let fs = require("fs");
 chai.use(chaiHttp);
 
@@ -18,31 +19,31 @@ let csfUrl = 'https://csf-geo-app.herokuapp.com';
 describe("Testing API with a mocked backend", function () {
 
     describe("Classrooms API", function () {
-        it("responds with json file response", function (done) {
+        it("responds with json file response", async () => {
             const JSON_FILE_PATH = './test/mock/classrooms.json';
             const PATH = '/api/classrooms';
             verifyJsonContentWithApi(PATH, JSON_FILE_PATH);
-            request
+            await request
             .get(PATH)
             .expect(200)
             .end(function (err, res) {
-                expect(res.body.name).to.equal("G-255");
-                done();
+                expect(res.body[0].name).to.equal("G-159");
+                expect(res.status).to.equal(200);
             });
         })
     });
 
     describe("Stairs API", function () {
-        it("responds with json file response", function (done) {
+        it("responds with json file response", async () => {
             const JSON_FILE_PATH = './test/mock/stairs.json';
             const PATH = '/api/stairs';
             verifyJsonContentWithApi(PATH, JSON_FILE_PATH);
-            request
+            await request
             .get(PATH)
             .expect(200)
             .end(function (err, res) {
-                expect(res.body.name).to.equal("GE-02");
-                done();
+                expect(res.body[0].name).to.equal("GE-00");
+                expect(res.status).to.equal(200);
             });
         })
     });

@@ -24,7 +24,8 @@ $ npm start
 
 ### 5. Run integration tests:
 ```bash
-$ npm test
+$ npm test ./test/apiTests.js
+$ npm test ./test/pathfinderTests.js
 ```
 
 #### You can use [Postman](https://www.getpostman.com) too to call the API.

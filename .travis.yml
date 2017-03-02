@@ -7,7 +7,8 @@ install:
 - npm install
 
 script:
-- npm test
+- npm test ./test/apiTests.js
+- npm test ./test/pathfinderTests.js
 
 deploy:
   provider: heroku

@@ -40,7 +40,6 @@ describe('Pathfinder of locals on same floor and wing', function() {
     describe('#pathfind(startLocal, endLocal)', function() {
         context('when the local to find is given', function(){
             it('should return the path to the local', async () => {
-
                 //Arrange
                 const PATH_PROPERTY = 'path';               
                 const WEIGHT_PROPERTY = 'weight';
@@ -64,7 +63,6 @@ describe('Pathfinder of locals on same floor and wing', function() {
     describe('#pathfind(startLocal, endLocal)', function() {
         context('when the local was found', function(){
             it('should return the total weight distance of the path', async () => {
-
                 //Arrange
                 const TOTAL_WEIGHT_PROPERTY = 'totalWeight';
 
@@ -81,7 +79,7 @@ describe('Pathfinder of locals on same floor and wing', function() {
 });
 
 /*
-describe('Pathfinder of locals on different floor but same wing', function(){
+describe('Pathfinder of locals on one floor and same wing', function(){
     const FIRST_FLOOR_LOCAL = 'G-165';
     const SECOND_FLOOR_LOCAL = 'G-273';
     const RESULT_LENGTH = 3;
@@ -93,8 +91,7 @@ describe('Pathfinder of locals on different floor but same wing', function(){
             it('should return a path to the local through staircases', async () => {
 
                 //Arrange
-                const PATH_PROPERTY = 'path';               
-                const WEIGHT_PROPERTY = 'weight';
+                const PATH_PROPERTY = 'path';
                 const FLOOR_PROPERTY = 'floorPath';
 
                 //Act
@@ -102,12 +99,12 @@ describe('Pathfinder of locals on different floor but same wing', function(){
                 
                 //Assert
                 expect(fullpath).to.have.lengthOf(RESULT_LENGTH);
-                expect(fullpath[0]).to.have.ownProperty(PATH_PROPERTY);
-                expect(fullpath[0].path).to.eql(EXPECTED_PATHFIND_RESULT[0].path);
-                expect(fullpath[0]).to.have.ownProperty(WEIGHT_PROPERTY);
-                expect(fullpath[0].weight).to.eql(EXPECTED_PATHFIND_RESULT[0].weight);
-                expect(fullpath[0]).to.have.ownProperty(FLOOR_PROPERTY);
-                expect(fullpath[0].floorPath).to.eql(EXPECTED_PATHFIND_RESULT[0].floorPath);
+                for(var i = 0; i <= fullpath.length -1; i++){
+                    expect(fullpath[i]).to.have.ownProperty(PATH_PROPERTY);
+                    expect(fullpath[i].path).to.eql(EXPECTED_PATHFIND_RESULT[i].path);
+                    expect(fullpath[i]).to.have.ownProperty(FLOOR_PROPERTY);
+                    expect(fullpath[i].floorPath).to.eql(EXPECTED_PATHFIND_RESULT[i].floorPath);
+                }
             });
         });
     });
@@ -129,8 +126,8 @@ describe('Pathfinder of locals on different floor but same wing', function(){
             });
         });
     });
-});*/
-
+});
+*/
 
 describe('Pathfinder of locals on local that doesnt exist', function(){
     const FIRST_FLOOR_LOCAL = 'G-100';
@@ -138,8 +135,7 @@ describe('Pathfinder of locals on local that doesnt exist', function(){
 
     describe('#pathfind(startLocal, endLocal)', function(){
         context('when the local to find is given', function(){
-            it('should fail', async function(done) {
-
+            it('should fail', async () => {
                 try {
                     new ErrorThrowingObject();
                     // Force the test to fail since error wasn't thrown
@@ -147,7 +143,6 @@ describe('Pathfinder of locals on local that doesnt exist', function(){
                 }
                 catch (error) {
                     // Constructor threw Error, so test succeeded.
-                    done();
                 }
             });
         });
