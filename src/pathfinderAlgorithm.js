@@ -10,6 +10,11 @@ var classrooms;
 
 var shortestPath = undefined;
 
+const classroomPath = '/api/classroom/';
+const allClassroomsPath = '/api/classrooms';
+const allStairsPath = '/api/stairs';
+const staircasePath = '/api/stair/';
+
 const corridorsModuleByFloor = { 
     1: '../json_files/corridors.json',
     2: '../json_files/corridors2.json'
@@ -23,14 +28,15 @@ const corridorsFileByFloor = {
 module.exports = {
     pathfind: async function (startingPoint, destinationPoint) {
         try{
-            originalStart = await ApiCallTools.getClassroom(startingPoint);
-            originalEnd = await ApiCallTools.getClassroom(destinationPoint);
-
-            staircases = await ApiCallTools.getAllStairs();
+            originalStart = await ApiCallTools.getFromAPI(classroomPath + startingPoint);
+            originalEnd = await ApiCallTools.getFromAPI(classroomPath +destinationPoint);
+            staircases = await ApiCallTools.getFromAPI(allStairsPath);
 
             await pathfindRecursive(startingPoint, destinationPoint, originalStart.floor, []);
             return shortestPath;
+
         } catch(e){ var error = e; }
+
         if (error != undefined){
            console.log(error);
         }
@@ -38,7 +44,6 @@ module.exports = {
 }
 
 async function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullPath){
-
     var startingObj = await getLocal(startingPoint);
     var endingObj = await getLocal(endingPoint);
 
@@ -48,7 +53,6 @@ async function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullP
             keepShortestPath(fullPath);
         }
         catch(e){
-            console.log('How is this even real?' + '\n');
             console.log(e);
         }
     }
@@ -123,8 +127,8 @@ function findingSameWingAndFloorStaircases(currentWing, currentFloor) {
 async function getLocal(localName){
     var localObj;
     if(localName.charAt(1) == 'E'){
-        localObj = await ApiCallTools.getStaircase(localName);
-    } else{ localObj = await ApiCallTools.getClassroom(localName); }
+        localObj = await ApiCallTools.getFromAPI(staircasePath + localName);
+    } else{ localObj = await ApiCallTools.getFromAPI(classroomPath + localName); }
     return localObj;
 }
 
