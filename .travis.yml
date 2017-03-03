@@ -7,8 +7,8 @@ node_js:
   - "node"
 
 install:
-- npm run build
 - npm install
+- npm run build
 
 script:
 - npm test
