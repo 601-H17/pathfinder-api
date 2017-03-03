@@ -1,10 +1,12 @@
 var express = require('express');
+require("babel-polyfill");
 var app = express();
 exports.app = app;
 var bodyParser = require('body-parser');
-var PathFinder = require('geojson-path-finder');
+var algoTools = require('./pathfinderAlgorithm');
 
-var geojson = require('./corridors.json');
+var geojson = require('../json_files/corridors.json');
+
 
 // Configure body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,41 +19,25 @@ var port = process.env.PORT || 8080;
 var router = express.Router();
 
 // GET /
-router.get('/', function(req, res) {
+router.get('/', async function(req, res) {
     var localA = req.query.localA,
         localB = req.query.localB;
-    var path;
+    var fullpath;
     var status;
     var error = undefined;
-    // console.log(localA);
-    // console.log(localB);
 
-    var fs = require('fs');
     try {
-        var start = findLocal(localA);
-        var finish = findLocal(localB);
-
-        function findLocal(toFind) {
-            var file = fs.readFileSync('./corridors.json');
-            var obj = JSON.parse(file);
-            for (var i = 0; i < obj.features.length; i++) {
-                if (obj.features[i].geometry.type == "Point" && obj.features[i].properties.ref != null && obj.features[i].properties.ref == toFind) {
-                    return obj.features[i];
-                }
-            }
-        }
-
-        var pathFinder = new PathFinder(geojson);
-        path = pathFinder.findPath(start, finish);
-    } catch (e) {
-        error = { message: "Can't find path with those locals" };
+        fullpath = await algoTools.pathfind(localA, localB);
+        /*console.log( '\n' + JSON.stringify(fullpath) + '\n');
+        for(var i = 0; i < fullpath.length - 1; i++){
+            console.log('Path ' + i + ': '+ fullpath[i].path + '\n');
+            console.log('Floor of the path  #' + i + ': ' + fullpath[i].floorPath + '\n');
+        }*/
+    } catch (e) { error = { message: "Can't find path with those locals" };}
+    if(error != undefined){
+        res.status(404).json({ message: error.message});
     }
-
-    if (error == undefined) {
-        res.status(200).json(path);
-    } else {
-        res.status(404).json({ error });
-    }
+    else{ res.status(200).json({ fullPath: fullpath });}
 });
 
 router.post('/corridors', function(req, res) {
