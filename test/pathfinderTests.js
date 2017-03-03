@@ -5,7 +5,6 @@ let fs = require("fs");
 let chai = require('chai');
 let expect = require('chai').expect;
 let chaiHttp = require('chai-http');
-let server = require('../build/index');
 let should = chai.should();
 chai.use(chaiHttp);
 
