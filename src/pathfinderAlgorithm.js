@@ -2,25 +2,27 @@ var ApiCallTools = require('./ApiRequest');
 var PathFinder = require('geojson-path-finder');
 var fs = require('fs');
 
-let originalStart;
-let originalEnd;
-
 var staircases;
 var classrooms;
 
-var shortestPath = undefined;
+var shortestPath;
 
 const classroomPath = '/api/classroom/';
 const allClassroomsPath = '/api/classrooms';
 const allStairsPath = '/api/stairs';
 const staircasePath = '/api/stair/';
 
-const corridorsModuleByFloor = { 
+const ERROR_MESSAGES = {
+    localNotFound: "Un ou des locaux passés n'existent pas !",
+    wingToWingNotImplemented: "Le pathfinding d'une aile vers l'autre n'est pas implémenté."
+};
+
+const CORRIDORS_MODULE_BY_FLOOR = { 
     1: '../json_files/corridors.json',
     2: '../json_files/corridors2.json'
 };
 
-const corridorsFileByFloor = {
+const CORRIDORS_FILE_BY_FLOOR = {
     1: './json_files/corridors.json',
     2: './json_files/corridors2.json'
 };
@@ -28,17 +30,19 @@ const corridorsFileByFloor = {
 module.exports = {
     pathfind: async function (startingPoint, destinationPoint) {
         try{
-            originalStart = await ApiCallTools.getFromAPI(classroomPath + startingPoint);
-            originalEnd = await ApiCallTools.getFromAPI(classroomPath +destinationPoint);
+            shortestPath = undefined;
+            var startObj = await ApiCallTools.getFromAPI(classroomPath + startingPoint);
+            var endObj = await ApiCallTools.getFromAPI(classroomPath + destinationPoint);
+
             staircases = await ApiCallTools.getFromAPI(allStairsPath);
 
-            await pathfindRecursive(startingPoint, destinationPoint, originalStart.floor, []);
+            await pathfindRecursive(startingPoint, destinationPoint, startObj.floor, []);
             return shortestPath;
 
         } catch(e){ var error = e; }
 
         if (error != undefined){
-           console.log(error);
+           console.error(error);
         }
     }
 }
@@ -46,14 +50,13 @@ module.exports = {
 async function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullPath){
     var startingObj = await getLocal(startingPoint);
     var endingObj = await getLocal(endingPoint);
-
     if(currentFloor == endingObj.floor && startingObj.wing == endingObj.wing){
         try{
             fullPath.push(findAndPathfind(startingObj, endingObj));
             keepShortestPath(fullPath);
         }
         catch(e){
-            console.log(e);
+            console.error(e);
         }
     }
     else if (startingObj.wing == endingObj.wing) {
@@ -64,18 +67,23 @@ async function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullP
                     if(endingObj.floor == a){
                         try{
                             fullPath.push(findAndPathfind(startingObj, staircasesOnSameFloor[i]));
-                            //return pathfindRecursive(staircasesOnSameFloor[i].name, endingPoint, fullPath);
                             await pathfindRecursive(staircasesOnSameFloor[i].name, endingObj.name, a, fullPath);
-                        } catch(e){ continue; }
+                        } catch(e){ 
+                            console.error(e);
+                            continue; 
+                        }
                     }
                 }
             }
         }
     }
+    else{
+        //Non implémenté
+    }
 }
 
 function findLocalGeo(localToFind, floor) {
-    var file = fs.readFileSync(corridorsFileByFloor[floor]);
+    var file = fs.readFileSync(CORRIDORS_FILE_BY_FLOOR[floor]);
     var obj = JSON.parse(file);
     for (var i = 0; i < obj.features.length; i++) {
         if (obj.features[i].geometry.type == "Point" && obj.features[i].properties.ref != null && obj.features[i].properties.ref == localToFind.name) {
@@ -88,11 +96,11 @@ function findAndPathfind(start, destination){
     var pathFloor;
     try{
         pathFloor = start.floor;
-        var geoFile = require(corridorsModuleByFloor[pathFloor]);
+        var geoFile = require(CORRIDORS_MODULE_BY_FLOOR[pathFloor]);
     }
     catch(e){ 
         pathFloor = destination.floor;
-        var geoFile = require(corridorsModuleByFloor[pathFloor]);
+        var geoFile = require(CORRIDORS_MODULE_BY_FLOOR[pathFloor]);
     }
 
     var startGeo = findLocalGeo(start, pathFloor);
