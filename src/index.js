@@ -27,24 +27,17 @@ router.get('/', async function(req, res) {
     var error = undefined;
 
     try {
-        fullpath = await algoTools.pathfind("G-165", "G-273");
-
-        console.log( '\n' + JSON.stringify(fullpath) + '\n');
+        fullpath = await algoTools.pathfind(localA, localB);
+        /*console.log( '\n' + JSON.stringify(fullpath) + '\n');
         for(var i = 0; i < fullpath.length - 1; i++){
             console.log('Path ' + i + ': '+ fullpath[i].path + '\n');
             console.log('Floor of the path  #' + i + ': ' + fullpath[i].floorPath + '\n');
-        }
-
-    } catch (e) {
-        error = { message: "Can't find path with those locals" };
+        }*/
+    } catch (e) { error = { message: "Can't find path with those locals" };}
+    if(error != undefined){
+        res.status(404).json({ message: error.message});
     }
-/*
-    if (error == undefined) {
-        res.status(200).json(path);
-    } else {
-        res.status(404).json({ error });
-    }
-*/
+    else{ res.status(200).json({ fullPath: fullpath });}
 });
 
 router.post('/corridors', function(req, res) {
