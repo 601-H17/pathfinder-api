@@ -78,7 +78,9 @@ async function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullP
         }
     }
     else{
-        //Non implémenté
+        try{
+            throw new Error(ERROR_MESSAGES.wingToWingNotImplemented);
+        }catch(e){ }
     }
 }
 
