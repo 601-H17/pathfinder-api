@@ -17,7 +17,7 @@ const ERROR_MESSAGES = {
     wingToWingNotImplemented: "Le pathfinding d'une aile vers l'autre n'est pas implémenté."
 };
 
-const CORRIDORS_MODULE_BY_FLOOR = { 
+const CORRIDORS_MODULE_BY_FLOOR = {
     1: '../json_files/corridors.json',
     2: '../json_files/corridors2.json'
 };
@@ -29,7 +29,7 @@ const CORRIDORS_FILE_BY_FLOOR = {
 
 module.exports = {
     pathfind: async function (startingPoint, destinationPoint) {
-        try{
+        try {
             shortestPath = undefined;
             var startObj = await ApiCallTools.getFromAPI(classroomPath + startingPoint);
             var endObj = await ApiCallTools.getFromAPI(classroomPath + destinationPoint);
@@ -39,48 +39,44 @@ module.exports = {
             await pathfindRecursive(startingPoint, destinationPoint, startObj.floor, []);
             return shortestPath;
 
-        } catch(e){ var error = e; }
+        } catch (e) { var error = e; }
 
-        if (error != undefined){
-           console.error(error);
-        }
+        if (error != undefined) { console.error(error); }
     }
 }
 
-async function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullPath){
+async function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullPath) {
     var startingObj = await getLocal(startingPoint);
     var endingObj = await getLocal(endingPoint);
-    if(currentFloor == endingObj.floor && startingObj.wing == endingObj.wing){
-        try{
+    if (currentFloor == endingObj.floor && startingObj.wing == endingObj.wing) {
+        try {
             fullPath.push(findAndPathfind(startingObj, endingObj));
             keepShortestPath(fullPath);
         }
-        catch(e){
-            console.error(e);
-        }
+        catch (e) { console.error(e); }
     }
     else if (startingObj.wing == endingObj.wing) {
         var staircasesOnSameFloor = findingSameFloorStaircases(startingObj.floor);
-        for(var i = 0; i < staircasesOnSameFloor.length; i++){
-            if(currentFloor >= staircasesOnSameFloor[i].floor_min){
-                for(var a = staircasesOnSameFloor[i].floor_min; a <= staircasesOnSameFloor[i].floor_max; a++){
-                    if(endingObj.floor == a){
-                        try{
+        for (let i = 0; i < staircasesOnSameFloor.length; i++) {
+            if (currentFloor >= staircasesOnSameFloor[i].floor_min) {
+                for (let a = staircasesOnSameFloor[i].floor_min; a <= staircasesOnSameFloor[i].floor_max; a++) {
+                    if (endingObj.floor == a) {
+                        try {
                             fullPath.push(findAndPathfind(startingObj, staircasesOnSameFloor[i]));
                             await pathfindRecursive(staircasesOnSameFloor[i].name, endingObj.name, a, fullPath);
-                        } catch(e){ 
+                        } catch (e) {
                             console.error(e);
-                            continue; 
+                            continue;
                         }
                     }
                 }
             }
         }
     }
-    else{
-        try{
+    else {
+        try {
             throw new Error(ERROR_MESSAGES.wingToWingNotImplemented);
-        }catch(e){ }
+        } catch (e) { }
     }
 }
 
@@ -94,13 +90,13 @@ function findLocalGeo(localToFind, floor) {
     }
 }
 
-function findAndPathfind(start, destination){
+function findAndPathfind(start, destination) {
     var pathFloor;
-    try{
+    try {
         pathFloor = start.floor;
         var geoFile = require(CORRIDORS_MODULE_BY_FLOOR[pathFloor]);
     }
-    catch(e){ 
+    catch (e) {
         pathFloor = destination.floor;
         var geoFile = require(CORRIDORS_MODULE_BY_FLOOR[pathFloor]);
     }
@@ -114,10 +110,10 @@ function findAndPathfind(start, destination){
     return path;
 }
 
-function findingSameFloorStaircases(currentFloor){
+function findingSameFloorStaircases(currentFloor) {
     var staircasesOnSameFloor = [];
-    for(var i = 0; i < staircases.length; i++){
-        if(currentFloor >= staircases[i].floor_min && currentFloor <= staircases[i].floor_max){
+    for (let i = 0; i < staircases.length; i++) {
+        if (currentFloor >= staircases[i].floor_min && currentFloor <= staircases[i].floor_max) {
             staircasesOnSameFloor.push(staircases[i]);
         }
     }
@@ -126,32 +122,32 @@ function findingSameFloorStaircases(currentFloor){
 
 function findingSameWingAndFloorStaircases(currentWing, currentFloor) {
     var staircasesOnSameWingAndFloor = [];
-        for(var i = 0; i < staircases.length; i++){
-        if(/*staircases[i].wing.equals(currentWing) && */staircases[i].floor == currentFloor){
+    for (let i = 0; i < staircases.length; i++) {
+        if (/*staircases[i].wing.equals(currentWing) && */staircases[i].floor == currentFloor) {
             staircasesOnSameWingAndFloor.push(staircases[i]);
         }
     }
     return staircasesOnSameWingAndFloor;
 }
 
-async function getLocal(localName){
+async function getLocal(localName) {
     var localObj;
-    if(localName.charAt(1) == 'E'){
+    if (localName.charAt(1) == 'E') {
         localObj = await ApiCallTools.getFromAPI(staircasePath + localName);
-    } else{ localObj = await ApiCallTools.getFromAPI(classroomPath + localName); }
+    } else { localObj = await ApiCallTools.getFromAPI(classroomPath + localName); }
     return localObj;
 }
 
 function keepShortestPath(fullPath) {
     var totalWeight = 0;
-    for(var i = 0; i < fullPath.length; i++){
+    for (let i = 0; i < fullPath.length; i++) {
         totalWeight += fullPath[i].weight;
     }
-    fullPath.push({"totalWeight" : totalWeight});
-    if(shortestPath === undefined){
+    fullPath.push({ "totalWeight": totalWeight });
+    if (shortestPath === undefined) {
         shortestPath = fullPath;
     }
-    else if(totalWeight < shortestPath.weight){
+    else if (totalWeight < shortestPath.weight) {
         shortestPath = fullPath;
     }
 }

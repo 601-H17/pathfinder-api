@@ -4,16 +4,14 @@ var fetch = require('node-fetch');
 const LOCAL_NOT_FOUND = "Un ou des locaux passés n'existent pas !";
 
 module.exports = {
-    getFromAPI: async function(path){
-        try{
-            let response = await fetch(csfUrl+path, { headers: {'Authorization': 'Token token='+authToken }})
-            if(response != undefined){
+    getFromAPI: async function (path) {
+        try {
+            let response = await fetch(csfUrl + path, { headers: { 'Authorization': 'Token token=' + authToken } })
+            if (response != undefined) {
                 return await response.json();
             }
-            else{
-                throw new Error(LOCAL_NOT_FOUND);
-            }
-        }catch(e){ }
+            else { throw new Error(LOCAL_NOT_FOUND); }
+        } catch (e) { }
     }
 
 }

@@ -19,7 +19,7 @@ var port = process.env.PORT || 8080;
 var router = express.Router();
 
 // GET /
-router.get('/', async function(req, res) {
+router.get('/', async function (req, res) {
     var localA = req.query.localA,
         localB = req.query.localB;
     var fullpath;
@@ -28,24 +28,19 @@ router.get('/', async function(req, res) {
 
     try {
         fullpath = await algoTools.pathfind(localA, localB);
-        /*console.log( '\n' + JSON.stringify(fullpath) + '\n');
-        for(var i = 0; i < fullpath.length - 1; i++){
-            console.log('Path ' + i + ': '+ fullpath[i].path + '\n');
-            console.log('Floor of the path  #' + i + ': ' + fullpath[i].floorPath + '\n');
-        }*/
-    } catch (e) { error = { message: "Can't find path with those locals" };}
-    if(error != undefined){
-        res.status(404).json({ message: error.message});
+    } catch (e) { error = { message: "Can't find path with those locals" }; }
+    if (error != undefined) {
+        res.status(404).json({ message: error.message });
     }
-    else{ res.status(200).json({ fullPath: fullpath });}
+    else { res.status(200).json({ fullPath: fullpath }); }
 });
 
-router.post('/corridors', function(req, res) {
+router.post('/corridors', function (req, res) {
     var corridors = req.body.map;
     var string = JSON.stringify(corridors, null, '\t');
     console.log(corridors);
     var fs = require('fs');
-    fs.writeFile("./corridors.json", string, function(err) {
+    fs.writeFile("./corridors.json", string, function (err) {
         if (err) {
             return console.log(err);
             res.status(400).json({ message: "File not saved", error: err });
