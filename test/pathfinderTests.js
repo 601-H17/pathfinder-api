@@ -146,7 +146,7 @@ describe('Pathfinder of locals on two different floors and same wing', function(
     });
 });
 
-/*
+
 describe('Pathfinder on local that doesnt exist', function(){
     const FIRST_FLOOR_LOCAL = 'G-100';
     const SAME_FLOOR_LOCAL = 'G-102';
@@ -156,7 +156,7 @@ describe('Pathfinder on local that doesnt exist', function(){
 
     describe('#pathfind(G-100, G-102)', function(){
         context('when the local to find does not exist', function(){
-            it('should fail', async () => {
+            it('should throw an exception', async () => {
                 expect(async () => algorithmPathfinder.pathfind(FIRST_FLOOR_LOCAL, SAME_FLOOR_LOCAL).to.throw(algorithmPathfinder.ERROR_MESSAGES.localNotFound));
             });
         });
@@ -167,6 +167,9 @@ describe('Pathfinder of locals on same floor but different wings', function(){
     const G_WING_LOCAL = 'G-158';
     const A_WING_LOCAL = 'A-227';
 
+    verifyJsonContentWithApi(API_PATHS.classroom, JSON_FILE_PATH.classrooms, G_WING_LOCAL);
+    verifyJsonContentWithApi(API_PATHS.classroom, JSON_FILE_PATH.classrooms, A_WING_LOCAL);
+
     describe('#pathfind(G-158, A-227)', function(){
         context('when the locals to find are given', function(){
             it('should throw an exception, because the feature is not implemented yet', async () => {
@@ -176,7 +179,7 @@ describe('Pathfinder of locals on same floor but different wings', function(){
     });
 
 });
-*/
+
 
 function verifyJsonContentWithApi(path, jsonFilePath, localName){
     //read the json file
