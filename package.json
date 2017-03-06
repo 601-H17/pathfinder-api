@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha --compilers js:babel-register",
     "start": "node build/index.js",
-    "build": "babel src -d build"
+    "build": "babel src -d build",
+    "postinstall": "npm run build"
   },
   "author": "",
   "license": "ISC",
