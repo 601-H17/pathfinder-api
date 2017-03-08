@@ -52,14 +52,14 @@ async function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullP
 
     if (currentFloor == endingObj.floor && startingObj.wing == endingObj.wing) {
         try {
-            console.log('1-FULLPATH : ' + JSON.stringify(fullPath) + '\n');
-            console.log('1: ' + startingObj.name + ' ' + endingObj.name + '\n');
+            //console.log('1-FULLPATH : ' + JSON.stringify(fullPath) + '\n');
+           // console.log('1: ' + startingObj.name + ' ' + endingObj.name + '\n');
             fullPath.push(findAndPathfind(startingObj, endingObj));
             keepShortestPath(fullPath);
-            console.log('1.5-FULLPATH : ' + JSON.stringify(fullPath) + '\n');
-            console.log('SHORTEST PATH : ' + JSON.stringify(shortestPath) + '\n');
+            //console.log('1.5-FULLPATH : ' + JSON.stringify(fullPath) + '\n');
+            //console.log('SHORTEST PATH : ' + JSON.stringify(shortestPath) + '\n');
             fullPath = [];
-            console.log('CLEARED ARRAY : ' + JSON.stringify(fullPath) + '\n');
+           // console.log('CLEARED ARRAY : ' + JSON.stringify(fullPath) + '\n');
         }
         catch (e) { console.error(e); }
     }
@@ -72,8 +72,8 @@ async function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullP
                 for (let a = staircasesOnSameFloor[i].floor_min; a <= staircasesOnSameFloor[i].floor_max; a++) {
                     if (endingObj.floor == a) {
                         try {
-                            console.log('2-FULLPATH : ' + JSON.stringify(fullPath) + '\n');
-                            console.log('2: ' + startingObj.name + ' ' + staircasesOnSameFloor[i].name + '\n');
+                            /*console.log('2-FULLPATH : ' + JSON.stringify(fullPath) + '\n');
+                            console.log('2: ' + startingObj.name + ' ' + staircasesOnSameFloor[i].name + '\n');*/
                             fullPath.push(findAndPathfind(startingObj, staircasesOnSameFloor[i]));
                             await pathfindRecursive(staircasesOnSameFloor[i].name, endingObj.name, a, fullPath);
                             fullPath = [];
@@ -151,9 +151,9 @@ function findingSameWingAndFloorStaircases(currentWing, currentFloor) {
 async function getLocal(localName) {
     var localObj;
     if (localName.charAt(1) == 'E') {
-        console.log(localName + '\n');
+        //console.log(localName + '\n');
         localObj = await ApiCallTools.getFromAPI(staircasePath + localName);
-    } else { console.log(localName + '\n'); localObj = await ApiCallTools.getFromAPI(classroomPath + localName); }
+    } else { /*console.log(localName + '\n');*/ localObj = await ApiCallTools.getFromAPI(classroomPath + localName); }
     return localObj;
 }
 
