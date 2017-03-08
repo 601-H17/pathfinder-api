@@ -30,3 +30,5 @@ $ npm test
 #### You can use [Postman](https://www.getpostman.com) too to call the API.
 #### GET a path with 2 params ```(localA and localB)```: [localhost:8080/api/pathfinder](localhost:8080/api/pathfinder)
 #### POST a new corridors map with map json ```({map : /* map infos */})```: [localhost:8080/api/pathfinder/corridor s](localhost:8080/api/pathfinder/corridors)
+
+*Note: Babel est utilisé, car les "async/await" ne sont pas encore gérés par le compilateur. Normalement, à partir de Mai 2017, ils seront gérés et Babel pourra être retiré.*
