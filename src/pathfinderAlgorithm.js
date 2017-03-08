@@ -53,21 +53,21 @@ async function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullP
     if (currentFloor == endingObj.floor && startingObj.wing == endingObj.wing) {
         try {
             //console.log('1-FULLPATH : ' + JSON.stringify(fullPath) + '\n');
-           // console.log('1: ' + startingObj.name + ' ' + endingObj.name + '\n');
+            // console.log('1: ' + startingObj.name + ' ' + endingObj.name + '\n');
             fullPath.push(findAndPathfind(startingObj, endingObj));
             keepShortestPath(fullPath);
             //console.log('1.5-FULLPATH : ' + JSON.stringify(fullPath) + '\n');
             //console.log('SHORTEST PATH : ' + JSON.stringify(shortestPath) + '\n');
             fullPath = [];
-           // console.log('CLEARED ARRAY : ' + JSON.stringify(fullPath) + '\n');
+            // console.log('CLEARED ARRAY : ' + JSON.stringify(fullPath) + '\n');
         }
         catch (e) { console.error(e); }
     }
-    
+
     else if (startingObj.wing == endingObj.wing) {
         var staircasesOnSameFloor = findingSameFloorStaircases(startingObj.floor);
         for (let i = 0; i < staircasesOnSameFloor.length; i++) {
-           // console.log(staircasesOnSameFloor[i]);
+            // console.log(staircasesOnSameFloor[i]);
             if (currentFloor >= staircasesOnSameFloor[i].floor_min) {
                 for (let a = staircasesOnSameFloor[i].floor_min; a <= staircasesOnSameFloor[i].floor_max; a++) {
                     if (endingObj.floor == a) {
@@ -95,7 +95,7 @@ async function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullP
 
 function findLocalGeo(localToFind, floor) {
     var localName = localToFind.name;
-    if(localToFind.name.charAt(1) == 'E'){
+    if (localToFind.name.charAt(1) == 'E') {
         localName = recreateStaircaseName(localToFind, floor);
     }
     var file = fs.readFileSync(CORRIDORS_FILE_BY_FLOOR[floor]);
@@ -116,7 +116,7 @@ function findAndPathfind(start, destination) {
     catch (e) {
         pathFloor = destination.floor;
         var geoFile = require(CORRIDORS_MODULE_BY_FLOOR[pathFloor]);
-        
+
     }
 
     var startGeo = findLocalGeo(start, pathFloor);
@@ -166,12 +166,12 @@ function keepShortestPath(fullPath) {
     if (shortestPath == undefined) {
         shortestPath = fullPath;
     }
-    else if (totalWeight < shortestPath[shortestPath.length-1].totalWeight) {
+    else if (totalWeight < shortestPath[shortestPath.length - 1].totalWeight) {
         shortestPath = fullPath;
     }
 }
 
-function recreateStaircaseName(staircase, floor){
+function recreateStaircaseName(staircase, floor) {
     var newName = staircase.name.slice(0, 3) + floor + staircase.name.slice(3)
     return newName;
 }
