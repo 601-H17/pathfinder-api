@@ -28,5 +28,5 @@ $ npm test
 ```
 
 #### You can use [Postman](https://www.getpostman.com) too to call the API.
-#### GET a path with 2 params (localA and localB): [localhost:8080/api/pathfinder](localhost:8080/api/pathfinder)
+#### GET a path with 2 params ```(localA and localB)```: [localhost:8080/api/pathfinder](localhost:8080/api/pathfinder)
 #### POST a new corridors map with map json ({map : /* map infos */}): [localhost:8080/api/pathfinder/corridor s](localhost:8080/api/pathfinder/corridors)
