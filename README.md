@@ -22,10 +22,9 @@ $ npm run build
 $ npm start
 ```
 
-### 5. Run integration tests:
+### 5. Run unit tests:
 ```bash
-$ npm test ./test/apiTests.js
-$ npm test ./test/pathfinderTests.js
+$ npm test 
 ```
 
 #### You can use [Postman](https://www.getpostman.com) too to call the API.
