@@ -31,3 +31,7 @@ $ npm test ./test/pathfinderTests.js
 #### You can use [Postman](https://www.getpostman.com) too to call the API.
 #### GET a path with 2 params (localA and localB): [localhost:8080/api/pathfinder](localhost:8080/api/pathfinder)
 #### POST a new corridors map with map json ({map : /* map infos */}): [localhost:8080/api/pathfinder/corridor s](localhost:8080/api/pathfinder/corridors)
+
+### **Cas à gérer.**
+#### 1. Pathfind d'une aile vers l'autre
+#### 2. Pathfind plus complexe, exemple : startFloor = 1 / endFloor = 3 , mais il n'y a aucun escalier qui se rend à l'étage. Un escalier se rend du premier au        deuxième étage et un autre du deuxième au troisième étage. 
