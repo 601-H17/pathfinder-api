@@ -12,6 +12,9 @@ const allClassroomsPath = '/api/classrooms';
 const allStairsPath = '/api/stairs';
 const staircasePath = '/api/stair/';
 
+const doorAndStairMapIdentifier = 'Point';
+const pathFloorJsonKey = 'floorPath';
+
 const ERROR_MESSAGES = {
     localNotFound: "Un ou des locaux passés n'existent pas !",
     wingToWingNotImplemented: "Le pathfinding d'une aile vers l'autre n'est pas implémenté."
@@ -91,7 +94,7 @@ function findLocalGeo(localToFind, floor) {
     var file = fs.readFileSync(CORRIDORS_FILE_BY_FLOOR[floor]);
     var obj = JSON.parse(file);
     for (var i = 0; i < obj.features.length; i++) {
-        if (obj.features[i].geometry.type == "Point" && obj.features[i].properties.ref != null && obj.features[i].properties.ref == localName) {
+        if (obj.features[i].geometry.type == doorAndStairMapIdentifier && obj.features[i].properties.ref != null && obj.features[i].properties.ref == localName) {
             return obj.features[i];
         }
     }
@@ -114,7 +117,7 @@ function findAndPathfind(start, destination) {
 
     var pathfinder = new PathFinder(geoFile);
     var path = pathfinder.findPath(startGeo, destinationGeo);
-    path['floorPath'] = pathFloor;
+    path[pathFloorJsonKey] = pathFloor;
     return path;
 }
 
