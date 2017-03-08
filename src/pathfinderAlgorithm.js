@@ -48,22 +48,35 @@ module.exports = {
 async function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullPath) {
     var startingObj = await getLocal(startingPoint);
     var endingObj = await getLocal(endingPoint);
+    //console.log(JSON.stringify(endingObj));
+
     if (currentFloor == endingObj.floor && startingObj.wing == endingObj.wing) {
         try {
+            console.log('1-FULLPATH : ' + JSON.stringify(fullPath) + '\n');
+            console.log('1: ' + startingObj.name + ' ' + endingObj.name + '\n');
             fullPath.push(findAndPathfind(startingObj, endingObj));
             keepShortestPath(fullPath);
+            console.log('1.5-FULLPATH : ' + JSON.stringify(fullPath) + '\n');
+            console.log('SHORTEST PATH : ' + JSON.stringify(shortestPath) + '\n');
+            fullPath = [];
+            console.log('CLEARED ARRAY : ' + JSON.stringify(fullPath) + '\n');
         }
         catch (e) { console.error(e); }
     }
+    
     else if (startingObj.wing == endingObj.wing) {
         var staircasesOnSameFloor = findingSameFloorStaircases(startingObj.floor);
         for (let i = 0; i < staircasesOnSameFloor.length; i++) {
+           // console.log(staircasesOnSameFloor[i]);
             if (currentFloor >= staircasesOnSameFloor[i].floor_min) {
                 for (let a = staircasesOnSameFloor[i].floor_min; a <= staircasesOnSameFloor[i].floor_max; a++) {
                     if (endingObj.floor == a) {
                         try {
+                            console.log('2-FULLPATH : ' + JSON.stringify(fullPath) + '\n');
+                            console.log('2: ' + startingObj.name + ' ' + staircasesOnSameFloor[i].name + '\n');
                             fullPath.push(findAndPathfind(startingObj, staircasesOnSameFloor[i]));
                             await pathfindRecursive(staircasesOnSameFloor[i].name, endingObj.name, a, fullPath);
+                            fullPath = [];
                         } catch (e) {
                             console.error(e);
                             continue;
@@ -81,10 +94,14 @@ async function pathfindRecursive(startingPoint, endingPoint, currentFloor, fullP
 }
 
 function findLocalGeo(localToFind, floor) {
+    var localName = localToFind.name;
+    if(localToFind.name.charAt(1) == 'E'){
+        localName = recreateStaircaseName(localToFind, floor);
+    }
     var file = fs.readFileSync(CORRIDORS_FILE_BY_FLOOR[floor]);
     var obj = JSON.parse(file);
     for (var i = 0; i < obj.features.length; i++) {
-        if (obj.features[i].geometry.type == "Point" && obj.features[i].properties.ref != null && obj.features[i].properties.ref == localToFind.name) {
+        if (obj.features[i].geometry.type == "Point" && obj.features[i].properties.ref != null && obj.features[i].properties.ref == localName) {
             return obj.features[i];
         }
     }
@@ -99,6 +116,7 @@ function findAndPathfind(start, destination) {
     catch (e) {
         pathFloor = destination.floor;
         var geoFile = require(CORRIDORS_MODULE_BY_FLOOR[pathFloor]);
+        
     }
 
     var startGeo = findLocalGeo(start, pathFloor);
@@ -123,7 +141,7 @@ function findingSameFloorStaircases(currentFloor) {
 function findingSameWingAndFloorStaircases(currentWing, currentFloor) {
     var staircasesOnSameWingAndFloor = [];
     for (let i = 0; i < staircases.length; i++) {
-        if (/*staircases[i].wing.equals(currentWing) && */staircases[i].floor == currentFloor) {
+        if (staircases[i].wing.equals(currentWing) && staircases[i].floor == currentFloor) {
             staircasesOnSameWingAndFloor.push(staircases[i]);
         }
     }
@@ -133,21 +151,27 @@ function findingSameWingAndFloorStaircases(currentWing, currentFloor) {
 async function getLocal(localName) {
     var localObj;
     if (localName.charAt(1) == 'E') {
+        console.log(localName + '\n');
         localObj = await ApiCallTools.getFromAPI(staircasePath + localName);
-    } else { localObj = await ApiCallTools.getFromAPI(classroomPath + localName); }
+    } else { console.log(localName + '\n'); localObj = await ApiCallTools.getFromAPI(classroomPath + localName); }
     return localObj;
 }
 
 function keepShortestPath(fullPath) {
     var totalWeight = 0;
-    for (let i = 0; i < fullPath.length; i++) {
+    for (var i = 0; i < fullPath.length; i++) {
         totalWeight += fullPath[i].weight;
     }
     fullPath.push({ "totalWeight": totalWeight });
-    if (shortestPath === undefined) {
+    if (shortestPath == undefined) {
         shortestPath = fullPath;
     }
-    else if (totalWeight < shortestPath.weight) {
+    else if (totalWeight < shortestPath[shortestPath.length-1].totalWeight) {
         shortestPath = fullPath;
     }
+}
+
+function recreateStaircaseName(staircase, floor){
+    var newName = staircase.name.slice(0, 3) + floor + staircase.name.slice(3)
+    return newName;
 }
