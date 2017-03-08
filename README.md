@@ -1,6 +1,4 @@
-# Path finder API
-
-[![Build Status](https://travis-ci.org/601-H17/pathfinder-api.svg?branch=master)](https://travis-ci.org/601-H17/pathfinder-api)
+# Path finder API [![Build Status](https://travis-ci.org/601-H17/pathfinder-api.svg?branch=master)](https://travis-ci.org/601-H17/pathfinder-api)
 
 To install NodeJS, follow this [guide](https://nodejs.org/en)
 
