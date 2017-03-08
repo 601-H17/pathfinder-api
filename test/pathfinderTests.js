@@ -87,15 +87,15 @@ describe('Pathfinder of locals on same floor and wing', async () => {
 describe('Pathfinder of locals on two different floors and same wing', function () {
     const FIRST_FLOOR_LOCAL = 'G-159';
     const SECOND_FLOOR_LOCAL = 'G-259';
-    const FIRST_STAIRCASE = 'GE-00';
+    const FIRST_STAIRCASE = 'GE-04';
     const SECOND_STAIRCASE = 'GE-01';
     const THIRD_STAIRCASE = 'GE-02';
     const FOURTH_STAIRCASE = 'GE-03';
     const RESULT_LENGTH = 3;
 
-    const EXPECTED_PATHFIND_RESULT = [{"path":[[-71.28744880705,46.78616405305],[-71.28744862094,46.78617692099],[-71.28756283019,46.78616756378],[-71.28759588902,46.78616485525],[-71.28761727415,46.78616310316]],"weight":0.014367897635021458,"floorPath":1},
-    {"path":[[-71.28770174226,46.78617886766],[-71.28768934462,46.78617991913],[-71.28759516197,46.78618790696],[-71.28754869317,46.78619184808],[-71.28746829755,46.78619866661],[-71.28742809974,46.78620207587],[-71.28734118171,46.78620944758],[-71.28733888829,46.7861961435]],"weight":0.02916080328538606,"floorPath":2},
-    { "totalWeight": 0.04352870092040752 }]
+    const EXPECTED_PATHFIND_RESULT = [{ "path": [[-71.28744880705, 46.78616405305], [-71.28744862094, 46.78617692099], [-71.28756283019, 46.78616756378], [-71.28759588902, 46.78616485525], [-71.28761727415, 46.78616310316], [-71.2876974678, 46.7861554083]], "weight": 0.02053525689345632, "floorPath": 1 }, 
+    {  "path": [[-71.28770174226, 46.78617886766], [-71.28768934462, 46.78617991913], [-71.28759516197, 46.78618790696], [-71.28754869317, 46.78619184808], [-71.28746829755, 46.78619866661], [-71.28742809974, 46.78620207587], [-71.28734118171, 46.78620944758], [-71.28733888829, 46.7861961435]], "weight": 0.02916080328538606, "floorPath": 2 }, 
+    { "totalWeight": 0.049696060178842386 }]
 
 
     verifyJsonContentWithApi(API_PATHS.staircases, JSON_FILE_PATH.staircases);
@@ -117,7 +117,7 @@ describe('Pathfinder of locals on two different floors and same wing', function 
 
                 //Act
                 var fullpath = await algorithmPathfinder.pathfind(FIRST_FLOOR_LOCAL, SECOND_FLOOR_LOCAL);
-
+                console.log(JSON.stringify(fullpath));
                 //Assert
                 expect(fullpath).to.have.lengthOf(RESULT_LENGTH);
                 for (var i = 0; i < fullpath.length - 1; i++) {
